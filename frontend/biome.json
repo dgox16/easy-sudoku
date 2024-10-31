@@ -1,15 +1,8 @@
 {
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
     "linter": {
         "enabled": true,
-        "rules": {
-            "all": true,
-            "complexity": {
-                "noForEach": "off"
-            },
-            "nursery": {
-                "useImportRestrictions": "off"
-            }
-        }
+        "rules": { "recommended": true }
     },
     "formatter": {
         "formatWithErrors": true,
