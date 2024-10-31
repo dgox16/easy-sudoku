@@ -1,0 +1,20 @@
+{
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "all": true,
+            "complexity": {
+                "noForEach": "off"
+            },
+            "nursery": {
+                "useImportRestrictions": "off"
+            }
+        }
+    },
+    "formatter": {
+        "formatWithErrors": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 100
+    }
+}
