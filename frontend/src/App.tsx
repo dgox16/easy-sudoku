@@ -18,18 +18,18 @@ function App() {
         const getFirstSudoku = async () => {
             const { data } = await axios.get("http://localhost:8000/sudoku/generate");
             setSudoku(data.sudoku);
-            const getCellBlock = (row, column) => {
+            const getCellBlock = (row: number, column: number) => {
                 return Math.floor((row - 1) / 3) * 3 + Math.floor((column - 1) / 3) + 1;
             };
 
-            const createGridFromArray = (array) => {
+            const createGridFromArray = (array: number[][]) => {
                 return array.flatMap((row, rowIndex) => {
-                    return row.map((value, columnIndex) => ({
+                    return row.map((value: number, columnIndex: number) => ({
                         id: String.fromCharCode(97 + rowIndex) + (columnIndex + 1), // 'a' es 97 en ASCII
                         column: columnIndex + 1,
                         row: rowIndex + 1,
                         block: getCellBlock(rowIndex + 1, columnIndex + 1),
-                        initialValue: value,
+                        value: value,
                         isHighlighted: false,
                     }));
                 });
