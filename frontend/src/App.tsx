@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { createGridFromArray } from "./libs/formatSudoku";
 import { Cell } from "./Cell";
+import { createGridFromArray } from "./libs/formatSudoku";
 
 interface CellType {
     block: number;
@@ -35,18 +35,14 @@ function App() {
     const { grid, setGrid } = useSudokuGrid();
     const [activeCell, setActiveCell] = useState<string | undefined>(undefined);
 
-    const getCellMates = (
-        grid: CellType[],
-        { id, block, row, column }: CellType,
-        property: keyof CellType = "id",
-    ) => {
+    const getCellMates = (grid: CellType[], { id, block, row, column }: CellType) => {
         return grid
             .filter(
                 (cell) =>
                     cell.id !== id &&
                     (cell.row === row || cell.column === column || cell.block === block),
             )
-            .map((cell) => cell[property]);
+            .map((cell) => cell.id);
     };
 
     const highlightMates = (cellMates: string[]) => {
@@ -68,18 +64,20 @@ function App() {
     };
 
     return (
-        <div className="grid grid-cols-9 border-4 border-red-500">
-            {grid.map((cell) => (
-                <Cell
-                    key={cell.id}
-                    highlightMates={highlightMates}
-                    setActiveCell={setActiveCell}
-                    clearHighlights={clearHighlights}
-                    cellMates={getCellMates(grid, cell)}
-                    isActive={activeCell === cell.id}
-                    {...cell}
-                />
-            ))}
+        <div className="flex justify-center items-center h-screen">
+            <div className="grid grid-cols-9 border-4 border-zinc-800">
+                {grid.map((cell) => (
+                    <Cell
+                        key={cell.id}
+                        highlightMates={highlightMates}
+                        setActiveCell={setActiveCell}
+                        clearHighlights={clearHighlights}
+                        cellMates={getCellMates(grid, cell)}
+                        isActive={activeCell === cell.id}
+                        {...cell}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
