@@ -10,6 +10,7 @@ export const createGridFromArray = (array: number[][]) => {
             row: rowIndex + 1,
             block: getCellBlock(rowIndex + 1, columnIndex + 1),
             value: value,
+            isEmpty: value === 0,
             isHighlighted: false,
         }));
     });
