@@ -68,11 +68,10 @@ function App() {
     };
 
     return (
-        <div className="flex flex-wrap w-[calc((var(--cell-size)+2px)*9+6px)] border-4 border-[var(--foreground)]">
+        <div className="grid grid-cols-9 border-4 border-red-500">
             {grid.map((cell) => (
                 <Cell
                     key={cell.id}
-                    hasError={false}
                     highlightMates={highlightMates}
                     setActiveCell={setActiveCell}
                     clearHighlights={clearHighlights}

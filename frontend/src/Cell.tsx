@@ -8,7 +8,6 @@ interface CellProps {
     cellMates: string[];
     isActive: boolean;
     isHighlighted: boolean;
-    hasError: boolean;
     highlightMates: (mates: string[]) => void;
     setActiveCell: (id: string) => void;
     clearHighlights: () => void;
@@ -22,7 +21,6 @@ export const Cell: FC<CellProps> = ({
     cellMates,
     isActive,
     isHighlighted,
-    hasError,
     highlightMates,
     setActiveCell,
     clearHighlights,
@@ -44,11 +42,10 @@ export const Cell: FC<CellProps> = ({
         clearHighlights();
     };
     const classList = [
-        "cell", //
-        `row-${row}`,
-        `col-${column}`,
+        "flex justify-center items-center size-10 border border-blue-300 border-opacity-60 relative text-center focus:outline-transparent focus:bg-blue-200",
+        row === 3 || row === 6 ? "border-b-4" : "",
+        column === 3 || column === 6 ? "border-r-4" : "",
         isHighlighted && "highlight",
-        hasError && "has-error",
         isActive && "is-active",
     ];
 
@@ -60,7 +57,7 @@ export const Cell: FC<CellProps> = ({
             onBlur={handleBlur}
             tabIndex={0}
         >
-            <span>{currentValue === 0 ? "" : currentValue}</span>
+            <span className="">{currentValue === 0 ? "" : currentValue}</span>
         </div>
     );
 };
