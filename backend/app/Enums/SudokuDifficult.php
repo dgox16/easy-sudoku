@@ -1,12 +1,19 @@
 <?php
 namespace App\Enums;
 
-enum SudokuDifficult: int
+enum SudokuDifficult: string
 {
-    case EASY = 19;
-    case MEDIUM = 28;
-    case HARD = 37;
-    case VERY_HARD = 46;
-    case INSANE = 55;
-    case INHUMAN = 64;
+    case EASY = 'easy';
+    case MEDIUM = 'medium';
+    case HARD = 'hard';
+    case INSANE = 'insane';
+    public function getCount(): int
+    {
+        return match ($this) {
+            self::EASY => 19,
+            self::MEDIUM => 28,
+            self::HARD => 37,
+            self::INSANE => 50,
+        };
+    }
 }

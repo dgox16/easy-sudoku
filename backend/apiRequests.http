@@ -1,3 +1,3 @@
-GET http://localhost:8000/sudoku/generate
+GET http://localhost:8000/sudoku/generate?difficult=insane
 Accept: application/json
 Content-Type: application/json

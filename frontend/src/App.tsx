@@ -18,7 +18,9 @@ function useSudokuGrid() {
     useEffect(() => {
         const fetchSudoku = async () => {
             try {
-                const { data } = await axios.get("http://localhost:8000/sudoku/generate");
+                const { data } = await axios.get(
+                    "http://localhost:8000/sudoku/generate?difficult=insane",
+                );
                 const gridObjects = createGridFromArray(data.sudoku);
                 setGrid(gridObjects);
             } catch (error) {

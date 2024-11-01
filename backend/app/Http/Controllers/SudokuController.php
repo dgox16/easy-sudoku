@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
+use App\Http\Requests\GenerateSudokuRequest;
 use App\Services\SudokuGenerator;
 use Illuminate\Http\Request;
 
 class SudokuController extends Controller
 {
-    public function generateSudoku(Request $request)
+    public function generateSudoku(GenerateSudokuRequest $request)
     {
         $generator = new SudokuGenerator();
         $board = $generator->generate();
-        $sudokuWithRemovedNumbers = $generator->removeNumbers(SudokuDifficult::MEDIUM->value);
+
+        $difficult = SudokuDifficult::from($request->difficult);
+        $sudokuWithRemovedNumbers = $generator->removeNumbers($difficult);
 
         return response()->json([
             'solution' => $board,

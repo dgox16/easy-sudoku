@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\SudokuDifficult;
+
 class SudokuGenerator extends Sudoku
 {
     public function generate(): array
@@ -41,8 +43,9 @@ class SudokuGenerator extends Sudoku
         return false;
     }
 
-    public function removeNumbers(int $count): array
+    public function removeNumbers(SudokuDifficult $difficult): array
     {
+        $count = $difficult->getCount();
         while ($count > 0) {
             $row = rand(0, $this->size - 1);
             $col = rand(0, $this->size - 1);
