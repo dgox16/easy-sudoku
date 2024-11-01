@@ -1,43 +1,30 @@
-import { type FC, type KeyboardEvent, useState } from "react";
+import type { FC } from "react";
+import type React from "react";
+import type { CellType } from "./types/sudokuTypes.ts";
 
 interface CellProps {
-    id: string;
-    row: number;
-    column: number;
-    value: number;
-    isEmpty: boolean;
+    cell: CellType;
     cellMates: string[];
-    isActive: boolean;
-    isHighlighted: boolean;
     highlightMates: (mates: string[]) => void;
-    setActiveCell: (id: string) => void;
     clearHighlights: () => void;
+    updateCellValue: (id: string, newValue: number) => void;
 }
 
 export const Cell: FC<CellProps> = ({
-    id,
-    row,
-    column,
-    value,
-    isEmpty,
+    cell,
     cellMates,
-    isActive,
-    isHighlighted,
     highlightMates,
-    setActiveCell,
     clearHighlights,
+    updateCellValue,
 }) => {
-    const [currentValue, setCurrentValue] = useState(value);
-
-    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (/[0-9]/.test(e.key)) {
-            setCurrentValue(Number(e.key));
+            updateCellValue(cell.id, Number(e.key));
         }
     };
 
     const handleFocus = () => {
         highlightMates(cellMates);
-        setActiveCell(id);
     };
 
     const handleBlur = () => {
@@ -45,28 +32,31 @@ export const Cell: FC<CellProps> = ({
     };
 
     const classList = [
-        "flex justify-center items-center size-10 border border-zinc-400 relative text-center focus:outline-transparent focus:bg-purple-500 focus:text-white",
-        (row === 3 || row === 6) && "border-b-4",
-        (column === 3 || column === 6) && "border-r-4",
-        isEmpty
-            ? "text-blue-300 font-bold text-black"
-            : `font-bold  ${isHighlighted ? "bg-purple-100" : "bg-zinc-100"} text-black`,
-        isHighlighted && "bg-purple-100",
+        "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white",
+
+        // cell.row === 1 && "border-t-0",
+        // cell.column === 1 && "border-l-0",
+        (cell.row === 3 || cell.row === 6) && "border-b-4",
+        (cell.column === 3 || cell.column === 6) && "border-r-4",
+        cell.isHighlighted && "bg-frost-3 bg-opacity-50 text-snow-storm-2",
+        cell.isEmpty
+            ? "font-medium text-frost-1"
+            : `font-bold text-snow-storm-2  ${!cell.isHighlighted ? "" : "bg-frost-3"}`,
     ];
 
     return (
-        <div
+        <button
+            type={"button"}
             className={classList.join(" ").trim()}
             onKeyDown={(e) => {
-                if (isEmpty) {
+                if (cell.isEmpty) {
                     handleKeyDown(e);
                 }
             }}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={0}
         >
-            <span className="">{currentValue === 0 ? "" : currentValue}</span>
-        </div>
+            <span className="">{cell.value === 0 ? "" : cell.value}</span>
+        </button>
     );
 };
