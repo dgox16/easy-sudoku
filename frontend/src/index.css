@@ -1,8 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* Elimina márgenes */
+
+:root {
+    --background: black;
+    --foreground: rgba(0, 128, 0, 0.6);
+    --cell-size: 40px;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: "Space Mono", Monaco, monospace;
+    background: var(--background);
+    color: #5da75d;
+    font-size: 16px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: solid 1px var(--foreground);
+    position: relative;
+    text-align: center;
+}
+
+.cell:focus {
+    outline: none;
+    background: rgb(0 0 255 / 40%);
+}
+
+.cell.highlight {
+    background: rgb(0 0 255 / 20%);
+}
+
+.cell.has-error {
+    color: rgba(221, 54, 54, 0.712);
+}
+
+.cell.is-active {
+    color: white;
+}
+
+.cell.col-3,
+.cell.col-6 {
+    border-right-width: 4px;
+}
+
+.cell.row-3,
+.cell.row-6 {
+    border-bottom-width: 4px;
 }
