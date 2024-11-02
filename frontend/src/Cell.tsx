@@ -40,7 +40,7 @@ export const Cell: FC<CellProps> = ({
         (cell.column === 3 || cell.column === 6) && "border-r-4",
         cell.isHighlighted && "bg-frost-3 bg-opacity-50 text-snow-storm-2",
         cell.isEmpty
-            ? "font-medium text-frost-1"
+            ? "font-bold text-frost-1"
             : `font-bold text-snow-storm-2  ${!cell.isHighlighted ? "" : "bg-frost-3"}`,
     ];
 
