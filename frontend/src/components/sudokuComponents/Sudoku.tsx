@@ -1,0 +1,25 @@
+import { useSudokuGrid } from "../../hooks/useGenerateSudoku";
+import { getCellMates } from "../../libs/getCellMates";
+import { Cell } from "./Cell";
+
+export const Sudoku = () => {
+    const { grid, updateCellValue, highlightMates, clearHighlights } =
+        useSudokuGrid();
+
+    return (
+        <div className="flex justify-center items-center h-screen bg-polar-night-0">
+            <div className="grid grid-cols-9 p-6 rounded-xl bg-polar-night-1">
+                {grid.map((cell) => (
+                    <Cell
+                        cell={cell}
+                        key={cell.id}
+                        updateCellValue={updateCellValue}
+                        highlightMates={highlightMates}
+                        clearHighlights={clearHighlights}
+                        cellMates={getCellMates(grid, cell)}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};

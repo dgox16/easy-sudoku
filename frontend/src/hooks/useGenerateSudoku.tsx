@@ -18,7 +18,7 @@ export const useSudokuGrid = () => {
                 );
                 const gridObjects = createGridFromArray(data.sudoku);
                 setGrid(gridObjects);
-                prevGridRef.current = gridObjects; // Inicializar prevGridRef con el grid inicial
+                prevGridRef.current = gridObjects;
             } catch (error) {
                 console.error("Error fetching sudoku:", error);
             }
@@ -31,6 +31,24 @@ export const useSudokuGrid = () => {
             prevGrid.map((cell) =>
                 cell.id === id ? { ...cell, value: newValue } : cell,
             ),
+        );
+    };
+
+    const highlightMates = (cellMates: string[]) => {
+        setGrid((prevGrid) =>
+            prevGrid.map((cell) => ({
+                ...cell,
+                isHighlighted: cellMates.includes(cell.id),
+            })),
+        );
+    };
+
+    const clearHighlights = () => {
+        setGrid((prevGrid) =>
+            prevGrid.map((cell) => ({
+                ...cell,
+                isHighlighted: false,
+            })),
         );
     };
 
@@ -49,5 +67,5 @@ export const useSudokuGrid = () => {
         prevGridRef.current = grid;
     }, [grid]);
 
-    return { grid, setGrid, updateCellValue };
+    return { grid, updateCellValue, highlightMates, clearHighlights };
 };
