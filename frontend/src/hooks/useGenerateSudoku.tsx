@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import {
+    convertArraytoGrid,
     convertGridToArray,
-    createGridFromArray,
 } from "../libs/formatSudoku.ts";
+import { generateSudokuRequest } from "../services/sudokuRequests.ts";
 import type { SudokuType } from "../types/sudokuTypes.ts";
 
 export const useSudokuGrid = () => {
@@ -14,10 +14,8 @@ export const useSudokuGrid = () => {
     useEffect(() => {
         const fetchSudoku = async () => {
             try {
-                const { data } = await axios.get(
-                    "http://localhost:8000/sudoku/generate?difficult=hard",
-                );
-                const gridObjects = createGridFromArray(data.sudoku);
+                const sudoku = await generateSudokuRequest("hard");
+                const gridObjects = convertArraytoGrid(sudoku.sudoku);
                 setGrid(gridObjects);
                 prevGridRef.current = gridObjects;
 
