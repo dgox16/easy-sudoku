@@ -9,11 +9,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property false|mixed|string $solution
  * @property false|mixed|string $grid
  * @property SudokuDifficult|mixed $difficult
+ * @property mixed $id
  */
 class Sudoku extends Model
 {
+
+    protected $fillable = [
+        'grid',
+        'solution',
+        'difficult',
+    ];
     protected $casts = [
-        'difficulty' => SudokuDifficult::class,
+        'difficult' => SudokuDifficult::class,
         'grid' => 'array',
     ];
 }
