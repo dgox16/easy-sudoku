@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guest_games', function (Blueprint $table) {
+        Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sudoku_id')->constrained('sudokus')->cascadeOnDelete();
             $table->boolean('finished')->default(false);
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guest_games');
+        Schema::dropIfExists('games');
     }
 };

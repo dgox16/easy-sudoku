@@ -15,7 +15,8 @@ export const useSudokuGrid = () => {
         const fetchSudoku = async () => {
             try {
                 const sudoku = await generateSudokuRequest("hard");
-                const gridObjects = convertArraytoGrid(sudoku.sudoku);
+                console.log(sudoku);
+                const gridObjects = convertArraytoGrid(sudoku.sudoku.grid);
                 setGrid(gridObjects);
                 prevGridRef.current = gridObjects;
 
@@ -71,6 +72,7 @@ export const useSudokuGrid = () => {
                 if (prevCell && cell.value !== prevCell.value) {
                     const sudokuArray = convertGridToArray(grid);
                     console.log(sudokuArray);
+                    console.log(timer);
                 }
             });
         }

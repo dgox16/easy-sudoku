@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
 use App\Http\Requests\GenerateSudokuRequest;
-use App\Models\GuestGame;
+use App\Models\Game;
 use App\Models\Sudoku;
 use App\Services\SudokuGenerator;
 use Illuminate\Http\JsonResponse;
@@ -25,11 +25,11 @@ class SudokuController extends Controller
             'difficult' => $difficult->value,
         ]);
 
-        $guestGame = GuestGame::create(['sudoku_id' => $newSudoku->id]);
+        $game = Game::create(['sudoku_id' => $newSudoku->id]);
 
         return response()->json([
-            'game' => $guestGame->id,
-            'finished' => $guestGame->finished,
+            'game' => $game->id,
+            'finished' => $game->finished,
             'sudoku' => [
                 'grid' => json_decode($newSudoku->grid, true),
                 'difficult' => $newSudoku->difficult,
