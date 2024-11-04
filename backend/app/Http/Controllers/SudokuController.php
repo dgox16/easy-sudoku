@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\SudokuDifficult;
 use App\Http\Requests\GenerateSudokuRequest;
 use App\Services\SudokuGenerator;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class SudokuController extends Controller
 {
-    public function generateSudoku(GenerateSudokuRequest $request)
+    public function generateSudoku(GenerateSudokuRequest $request): JsonResponse
     {
         $generator = new SudokuGenerator();
         $board = $generator->generate();
