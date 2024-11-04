@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sudoku_id')->constrained('sudokus')->cascadeOnDelete();
             $table->boolean('finished')->default(false);
+            $table->integer('timer_seconds')->default(0);
             $table->timestamps();
         });
     }
