@@ -1,4 +1,4 @@
-import { useSudokuGrid } from "../../hooks/useGenerateSudoku";
+import { useNewGame } from "../../hooks/useNewGame.tsx";
 import { getCellMates } from "../../libs/getCellMates";
 import { Cell } from "./Cell";
 
@@ -9,7 +9,7 @@ export const Sudoku = () => {
         highlightMates,
         clearHighlights,
         formattedTime,
-    } = useSudokuGrid();
+    } = useNewGame();
 
     return (
         <div className="flex flex-col justify-center items-center bg-polar-night-0">

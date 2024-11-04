@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class SudokuController extends Controller
 {
-    public function generateSudoku(GenerateSudokuRequest $request): JsonResponse
+    public function newGameSudoku(GenerateSudokuRequest $request): JsonResponse
     {
         $difficult = SudokuDifficult::from($request->difficult);
 

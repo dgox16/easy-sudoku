@@ -3,10 +3,10 @@ import {
     convertArraytoGrid,
     convertGridToArray,
 } from "../libs/formatSudoku.ts";
-import { generateSudokuRequest } from "../services/sudokuRequests.ts";
+import { newGameRequest } from "../services/sudokuRequests.ts";
 import type { SudokuType } from "../types/sudokuTypes.ts";
 
-export const useSudokuGrid = () => {
+export const useNewGame = () => {
     const [grid, setGrid] = useState<SudokuType>([]);
     const [timer, setTimer] = useState(0);
     const prevGridRef = useRef<SudokuType | null>(null);
@@ -14,11 +14,10 @@ export const useSudokuGrid = () => {
     useEffect(() => {
         const fetchSudoku = async () => {
             try {
-                const sudoku = await generateSudokuRequest("hard");
-                console.log(sudoku);
-                const gridObjects = convertArraytoGrid(sudoku.sudoku.grid);
-                setGrid(gridObjects);
-                prevGridRef.current = gridObjects;
+                const sudoku = await newGameRequest("hard");
+                const gridAux = convertArraytoGrid(sudoku.sudoku.grid);
+                setGrid(gridAux);
+                prevGridRef.current = gridAux;
 
                 const interval = setInterval(() => {
                     setTimer((prevTimer) => prevTimer + 1);
