@@ -8,6 +8,7 @@ import type { SudokuType } from "../types/sudokuTypes.ts";
 
 export const useSudokuGrid = () => {
     const [grid, setGrid] = useState<SudokuType>([]);
+    const [timer, setTimer] = useState(0);
     const prevGridRef = useRef<SudokuType | null>(null);
 
     useEffect(() => {
@@ -19,12 +20,23 @@ export const useSudokuGrid = () => {
                 const gridObjects = createGridFromArray(data.sudoku);
                 setGrid(gridObjects);
                 prevGridRef.current = gridObjects;
+
+                const interval = setInterval(() => {
+                    setTimer((prevTimer) => prevTimer + 1);
+                }, 1000);
+
+                return () => clearInterval(interval);
             } catch (error) {
                 console.error("Error fetching sudoku:", error);
             }
         };
         fetchSudoku();
     }, []);
+
+    const formattedTime =
+        `${String(Math.floor(timer / 3600)).padStart(2, "0")}:` +
+        `${String(Math.floor((timer % 3600) / 60)).padStart(2, "0")}:` +
+        `${String(timer % 60).padStart(2, "0")}`;
 
     const updateCellValue = (id: string, newValue: number) => {
         setGrid((prevGrid) =>
@@ -67,5 +79,11 @@ export const useSudokuGrid = () => {
         prevGridRef.current = grid;
     }, [grid]);
 
-    return { grid, updateCellValue, highlightMates, clearHighlights };
+    return {
+        grid,
+        updateCellValue,
+        highlightMates,
+        clearHighlights,
+        formattedTime,
+    };
 };
