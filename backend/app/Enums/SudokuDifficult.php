@@ -10,10 +10,10 @@ enum SudokuDifficult: string
     public function getCount(): int
     {
         return match ($this) {
-            self::EASY => 42,
-            self::MEDIUM => 46,
-            self::HARD => 50,
-            self::INSANE => 54,
+            self::EASY => 37,
+            self::MEDIUM => 42,
+            self::HARD => 47,
+            self::INSANE => 52,
         };
     }
 }

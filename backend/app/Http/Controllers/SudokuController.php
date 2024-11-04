@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
-use App\Http\Requests\GenerateSudokuRequest;
+use App\Http\Requests\NewGameRequest;
+use App\Http\Requests\newMovementRequest;
 use App\Models\Game;
 use App\Models\Sudoku;
 use App\Services\SudokuGenerator;
@@ -11,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 
 class SudokuController extends Controller
 {
-    public function newGameSudoku(GenerateSudokuRequest $request): JsonResponse
+    public function newGameSudoku(NewGameRequest $request): JsonResponse
     {
         $difficult = SudokuDifficult::from($request->difficult);
 
@@ -35,5 +36,11 @@ class SudokuController extends Controller
                 'difficult' => $newSudoku->difficult,
             ]
         ]);
+    }
+
+    public function newMovement(newMovementRequest $request): JsonResponse
+    {
+        $sudoku = Game::find($request->game_id)->sudoku;
+        return response()->json($sudoku);
     }
 }

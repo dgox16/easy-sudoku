@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Game extends Model
 {
@@ -10,4 +12,9 @@ class Game extends Model
         'sudoku_id',
         'finished'
     ];
+
+    public function sudoku(): BelongsTo
+    {
+        return $this->belongsTo(Sudoku::class);
+    }
 }

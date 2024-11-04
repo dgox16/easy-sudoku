@@ -2,15 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\SudokuDifficult;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-/**
- * @property mixed $difficult
- */
-class GenerateSudokuRequest extends FormRequest
+class newMovementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +23,11 @@ class GenerateSudokuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'difficult' => ['required', Rule::enum(SudokuDifficult::class)],
+            'game_id' => 'required|integer|exists:games,id',
+            'current_grid' => 'required|array|size:9',
+            'current_grid.*' => 'array|size:9',
+            'current_grid.*.*' => 'integer|min:0|max:9',
+            'timer' => 'required|integer',
         ];
     }
 }
