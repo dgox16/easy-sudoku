@@ -25,13 +25,13 @@ class SudokuController extends Controller
             'difficult' => $difficult->value,
         ]);
 
-        $guestGame =  GuestGame::create(['sudoku_id' => $newSudoku->id]);
+        $guestGame = GuestGame::create(['sudoku_id' => $newSudoku->id]);
 
         return response()->json([
             'game' => $guestGame->id,
             'finished' => $guestGame->finished,
             'sudoku' => [
-                'grid' => $newSudoku->grid,
+                'grid' => json_decode($newSudoku->grid, true),
                 'difficult' => $newSudoku->difficult,
             ]
         ]);
