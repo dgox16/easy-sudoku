@@ -10,7 +10,8 @@ class Game extends Model
 {
     protected $fillable = [
         'sudoku_id',
-        'finished'
+        'finished',
+        'timer_seconds'
     ];
 
     public function sudoku(): BelongsTo

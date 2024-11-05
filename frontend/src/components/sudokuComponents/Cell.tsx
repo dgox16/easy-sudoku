@@ -27,7 +27,7 @@ export const Cell: FC<CellProps> = ({
     };
 
     const classList = [
-        "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white",
+        "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white outline-none",
         (cell.row === 3 || cell.row === 6) && "border-b-4",
         (cell.column === 3 || cell.column === 6) && "border-r-4",
         cell.isSameValue && "bg-frost-2 bg-opacity-50 text-snow-storm-2",

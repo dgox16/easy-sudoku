@@ -13,4 +13,8 @@ class Movement extends Model
         'is_winning_movement',
         'is_backward'
     ];
+
+    protected $casts = [
+        'current_grid' => 'array',
+    ];
 }
