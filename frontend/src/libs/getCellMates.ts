@@ -1,7 +1,7 @@
-import type { CellType, SudokuType } from "../types/sudokuTypes.ts";
+import type { CellType } from "../types/sudokuTypes.ts";
 
 export const getCellMates = (
-    grid: SudokuType,
+    grid: CellType[],
     { id, block, row, column }: CellType,
 ) => {
     return grid
@@ -15,7 +15,7 @@ export const getCellMates = (
         .map((cell) => cell.id);
 };
 
-export const getSameValueCell = (grid: SudokuType, { id, value }: CellType) => {
+export const getSameValueCell = (grid: CellType[], { id, value }: CellType) => {
     return grid
         .filter(
             (cell) =>

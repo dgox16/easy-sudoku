@@ -4,7 +4,7 @@ import { Cell } from "./Cell";
 
 export const Sudoku = () => {
     const {
-        grid,
+        game,
         updateCellValue,
         highlightMates,
         highlightSameValue,
@@ -18,7 +18,7 @@ export const Sudoku = () => {
                 {formattedTime}
             </p>
             <div className="grid grid-cols-9 p-4 rounded-xl bg-polar-night-1">
-                {grid.map((cell) => (
+                {game.sudoku.map((cell) => (
                     <Cell
                         cell={cell}
                         key={cell.id}
@@ -26,8 +26,8 @@ export const Sudoku = () => {
                         highlightMates={highlightMates}
                         highlightSameValue={highlightSameValue}
                         clearHighlights={clearHighlights}
-                        cellMates={getCellMates(grid, cell)}
-                        sameValueCells={getSameValueCell(grid, cell)}
+                        cellMates={getCellMates(game.sudoku, cell)}
+                        sameValueCells={getSameValueCell(game.sudoku, cell)}
                     />
                 ))}
             </div>

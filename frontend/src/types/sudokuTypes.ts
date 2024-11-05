@@ -10,7 +10,15 @@ export interface CellType {
     value: number;
 }
 
-export type SudokuType = CellType[];
+export type GameMatrixType = {
+    game: number;
+    sudoku: number[][];
+};
+
+export type GameType = {
+    game: number;
+    sudoku: CellType[];
+};
 
 export interface CellProps {
     cell: CellType;

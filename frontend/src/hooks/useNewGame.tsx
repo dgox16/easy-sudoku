@@ -1,23 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import {
-    convertArrayToGrid,
-    convertGridToArray,
+    convertGridToMatrix,
+    convertMatrixToGrid,
 } from "../libs/formatSudoku.ts";
 import { newGameRequest } from "../services/sudokuRequests.ts";
-import type { SudokuType } from "../types/sudokuTypes.ts";
+import type { GameType } from "../types/sudokuTypes.ts";
 
 export const useNewGame = () => {
-    const [grid, setGrid] = useState<SudokuType>([]);
+    const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
     const [timer, setTimer] = useState(0);
-    const prevGridRef = useRef<SudokuType | null>(null);
+    const prevGameRef = useRef<GameType | null>(null);
 
     useEffect(() => {
         const fetchSudoku = async () => {
             try {
-                const sudoku = await newGameRequest("hard");
-                const gridAux = convertArrayToGrid(sudoku.sudoku.grid);
-                setGrid(gridAux);
-                prevGridRef.current = gridAux;
+                const gameResponse = await newGameRequest("hard");
+                const gameFormatted = convertMatrixToGrid(gameResponse);
+                setGame(gameFormatted);
+                prevGameRef.current = gameFormatted;
 
                 const interval = setInterval(() => {
                     setTimer((prevTimer) => prevTimer + 1);
@@ -37,59 +37,71 @@ export const useNewGame = () => {
         `${String(timer % 60).padStart(2, "0")}`;
 
     const updateCellValue = (id: string, newValue: number) => {
-        setGrid((prevGrid) =>
-            prevGrid.map((cell) =>
-                cell.id === id ? { ...cell, value: newValue } : cell,
-            ),
-        );
+        setGame((prevGame) => {
+            return {
+                game: prevGame.game,
+                sudoku: prevGame.sudoku.map((cell) =>
+                    cell.id === id ? { ...cell, value: newValue } : cell,
+                ),
+            };
+        });
     };
 
     const highlightMates = (cellMates: string[]) => {
-        setGrid((prevGrid) =>
-            prevGrid.map((cell) => ({
-                ...cell,
-                isHighlighted: cellMates.includes(cell.id),
-            })),
-        );
+        setGame((prevGame) => {
+            return {
+                game: prevGame.game,
+                sudoku: prevGame.sudoku.map((cell) => ({
+                    ...cell,
+                    isHighlighted: cellMates.includes(cell.id),
+                })),
+            };
+        });
     };
 
     const highlightSameValue = (cellMates: string[]) => {
-        setGrid((prevGrid) =>
-            prevGrid.map((cell) => ({
-                ...cell,
-                isSameValue: cellMates.includes(cell.id),
-            })),
-        );
+        setGame((prevGame) => {
+            return {
+                game: prevGame.game,
+                sudoku: prevGame.sudoku.map((cell) => ({
+                    ...cell,
+                    isSameValue: cellMates.includes(cell.id),
+                })),
+            };
+        });
     };
 
     const clearHighlights = () => {
-        setGrid((prevGrid) =>
-            prevGrid.map((cell) => ({
-                ...cell,
-                isHighlighted: false,
-                isSameValue: false,
-            })),
-        );
+        setGame((prevGame) => {
+            return {
+                game: prevGame.game,
+                sudoku: prevGame.sudoku.map((cell) => ({
+                    ...cell,
+                    isHighlighted: false,
+                    isSameValue: false,
+                })),
+            };
+        });
     };
 
     useEffect(() => {
-        if (prevGridRef.current) {
-            grid.forEach((cell, index) => {
-                const prevCell = prevGridRef.current
-                    ? prevGridRef.current[index]
+        if (prevGameRef.current) {
+            game.sudoku.forEach((cell, index) => {
+                const prevCell = prevGameRef.current
+                    ? prevGameRef.current.sudoku[index]
                     : null;
                 if (prevCell && cell.value !== prevCell.value) {
-                    const sudokuArray = convertGridToArray(grid);
-                    console.log(sudokuArray);
+                    const gameMatrix = convertGridToMatrix(game);
+                    console.log(gameMatrix);
                     console.log(timer);
                 }
             });
         }
-        prevGridRef.current = grid;
-    }, [grid]);
+        prevGameRef.current = game;
+    }, [game]);
 
     return {
-        grid,
+        game,
         updateCellValue,
         highlightMates,
         highlightSameValue,
