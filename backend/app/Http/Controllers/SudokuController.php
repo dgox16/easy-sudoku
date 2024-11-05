@@ -21,8 +21,8 @@ class SudokuController extends Controller
         $sudokuWithRemovedNumbers = $generator->removeNumbers($difficult);
 
         $newSudoku = Sudoku::create([
-            'solution' => json_encode($board),
-            'grid' => json_encode($sudokuWithRemovedNumbers),
+            'solution' => $board,
+            'grid' => $sudokuWithRemovedNumbers,
             'difficult' => $difficult->value,
         ]);
 
@@ -32,7 +32,7 @@ class SudokuController extends Controller
             'game' => $game->id,
             'finished' => $game->finished,
             'sudoku' => [
-                'grid' => json_decode($newSudoku->grid, true),
+                'grid' => $newSudoku->grid,
                 'difficult' => $newSudoku->difficult,
             ]
         ]);
@@ -40,7 +40,8 @@ class SudokuController extends Controller
 
     public function newMovement(newMovementRequest $request): JsonResponse
     {
-        $sudoku = Game::find($request->game_id)->sudoku;
+        $sudoku = Sudoku::find(2)->grid;
+        var_dump(gettype($sudoku));
         return response()->json($sudoku);
     }
 }

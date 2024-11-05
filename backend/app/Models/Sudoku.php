@@ -22,5 +22,6 @@ class Sudoku extends Model
     protected $casts = [
         'difficult' => SudokuDifficult::class,
         'grid' => 'array',
+        'solution' => 'array',
     ];
 }

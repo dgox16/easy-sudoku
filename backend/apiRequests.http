@@ -1,4 +1,4 @@
-GET http://localhost:8000/sudoku/new-game?difficult=insane
+GET http://localhost:8000/sudoku/new-game?difficult=hard
 Accept: application/json
 Content-Type: application/json
 
@@ -9,7 +9,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "game_id": 35,
+    "game_id": 3,
     "timer": 100,
     "current_grid": [
         [2, 0, 3, 0, 0, 7, 0, 0, 0],
