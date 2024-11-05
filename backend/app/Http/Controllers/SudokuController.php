@@ -90,8 +90,11 @@ class SudokuController extends Controller
                 'is_winning_movement' => $finished,
                 'is_backward' => false,
             ]);
-
             return response()->json($newMovement);
         }
+
+        return response()->json([
+            'error' => "error"
+        ]);
     }
 }

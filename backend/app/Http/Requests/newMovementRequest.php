@@ -5,6 +5,11 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property mixed $current_grid
+ * @property mixed $timer
+ * @property mixed $game_id
+ */
 class newMovementRequest extends FormRequest
 {
     /**
