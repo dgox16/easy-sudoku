@@ -11,3 +11,13 @@ export interface CellType {
 }
 
 export type SudokuType = CellType[];
+
+export interface CellProps {
+    cell: CellType;
+    cellMates: string[];
+    sameValueCells: string[];
+    highlightMates: (mates: string[]) => void;
+    highlightSameValue: (mates: string[]) => void;
+    clearHighlights: () => void;
+    updateCellValue: (id: string, newValue: number) => void;
+}

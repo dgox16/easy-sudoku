@@ -1,16 +1,6 @@
 import type { FC } from "react";
 import type React from "react";
-import type { CellType } from "../../types/sudokuTypes";
-
-interface CellProps {
-    cell: CellType;
-    cellMates: string[];
-    sameValueCells: string[];
-    highlightMates: (mates: string[]) => void;
-    highlightSameValue: (mates: string[]) => void;
-    clearHighlights: () => void;
-    updateCellValue: (id: string, newValue: number) => void;
-}
+import type { CellProps } from "../../types/sudokuTypes.ts";
 
 export const Cell: FC<CellProps> = ({
     cell,
@@ -40,11 +30,9 @@ export const Cell: FC<CellProps> = ({
         "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white",
         (cell.row === 3 || cell.row === 6) && "border-b-4",
         (cell.column === 3 || cell.column === 6) && "border-r-4",
-        cell.isSameValue && "bg-frost-3 bg-opacity-60 text-snow-storm-2",
+        cell.isSameValue && "bg-frost-2 bg-opacity-50 text-snow-storm-2",
         cell.isHighlighted && "bg-frost-3 bg-opacity-20 text-snow-storm-2",
-        cell.isEmpty
-            ? "font-bold text-frost-1"
-            : `font-bold text-snow-storm-2  ${!cell.isHighlighted ? "" : "bg-frost-3"}`,
+        cell.isEmpty ? "font-bold text-frost-1" : "font-bold text-snow-storm-2",
     ];
 
     return (
