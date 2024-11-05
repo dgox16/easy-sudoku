@@ -3,6 +3,7 @@ export interface CellType {
     column: number;
     id: string;
     isHighlighted: boolean;
+    isSameValue: boolean;
     row: number;
     initialValue: number;
     isEmpty: boolean;

@@ -4,7 +4,7 @@ const getCellBlock = (row: number, column: number) => {
     return Math.floor((row - 1) / 3) * 3 + Math.floor((column - 1) / 3) + 1;
 };
 
-export const convertArraytoGrid = (array: number[][]): SudokuType => {
+export const convertArrayToGrid = (array: number[][]): SudokuType => {
     return array.flatMap((row, rowIndex) => {
         return row.map((value: number, columnIndex: number) => ({
             id: String.fromCharCode(97 + rowIndex) + (columnIndex + 1), // 'a' es 97 en ASCII
@@ -15,6 +15,7 @@ export const convertArraytoGrid = (array: number[][]): SudokuType => {
             initialValue: value,
             isEmpty: value === 0,
             isHighlighted: false,
+            isSameValue: false,
         }));
     });
 };

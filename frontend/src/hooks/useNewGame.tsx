@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
-    convertArraytoGrid,
+    convertArrayToGrid,
     convertGridToArray,
 } from "../libs/formatSudoku.ts";
 import { newGameRequest } from "../services/sudokuRequests.ts";
@@ -15,7 +15,7 @@ export const useNewGame = () => {
         const fetchSudoku = async () => {
             try {
                 const sudoku = await newGameRequest("hard");
-                const gridAux = convertArraytoGrid(sudoku.sudoku.grid);
+                const gridAux = convertArrayToGrid(sudoku.sudoku.grid);
                 setGrid(gridAux);
                 prevGridRef.current = gridAux;
 
@@ -53,11 +53,21 @@ export const useNewGame = () => {
         );
     };
 
+    const highlightSameValue = (cellMates: string[]) => {
+        setGrid((prevGrid) =>
+            prevGrid.map((cell) => ({
+                ...cell,
+                isSameValue: cellMates.includes(cell.id),
+            })),
+        );
+    };
+
     const clearHighlights = () => {
         setGrid((prevGrid) =>
             prevGrid.map((cell) => ({
                 ...cell,
                 isHighlighted: false,
+                isSameValue: false,
             })),
         );
     };
@@ -82,6 +92,7 @@ export const useNewGame = () => {
         grid,
         updateCellValue,
         highlightMates,
+        highlightSameValue,
         clearHighlights,
         formattedTime,
     };

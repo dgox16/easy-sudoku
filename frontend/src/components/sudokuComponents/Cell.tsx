@@ -5,7 +5,9 @@ import type { CellType } from "../../types/sudokuTypes";
 interface CellProps {
     cell: CellType;
     cellMates: string[];
+    sameValueCells: string[];
     highlightMates: (mates: string[]) => void;
+    highlightSameValue: (mates: string[]) => void;
     clearHighlights: () => void;
     updateCellValue: (id: string, newValue: number) => void;
 }
@@ -13,7 +15,9 @@ interface CellProps {
 export const Cell: FC<CellProps> = ({
     cell,
     cellMates,
+    sameValueCells,
     highlightMates,
+    highlightSameValue,
     clearHighlights,
     updateCellValue,
 }) => {
@@ -25,6 +29,7 @@ export const Cell: FC<CellProps> = ({
 
     const handleFocus = () => {
         highlightMates(cellMates);
+        highlightSameValue(sameValueCells);
     };
 
     const handleBlur = () => {
@@ -35,7 +40,8 @@ export const Cell: FC<CellProps> = ({
         "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white",
         (cell.row === 3 || cell.row === 6) && "border-b-4",
         (cell.column === 3 || cell.column === 6) && "border-r-4",
-        cell.isHighlighted && "bg-frost-3 bg-opacity-30 text-snow-storm-2",
+        cell.isSameValue && "bg-frost-3 bg-opacity-60 text-snow-storm-2",
+        cell.isHighlighted && "bg-frost-3 bg-opacity-20 text-snow-storm-2",
         cell.isEmpty
             ? "font-bold text-frost-1"
             : `font-bold text-snow-storm-2  ${!cell.isHighlighted ? "" : "bg-frost-3"}`,
