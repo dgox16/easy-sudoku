@@ -46,18 +46,29 @@ class SudokuGenerator extends Sudoku
     public function removeNumbers(SudokuDifficult $difficult): array
     {
         $count = $difficult->getCount();
-        while ($count > 0) {
-            $row = rand(0, $this->size - 1);
-            $col = rand(0, $this->size - 1);
+        $positions = [];
+
+        for ($i = 0; $i < $this->size; $i++) {
+            for ($j = 0; $j < $this->size; $j++) {
+                $positions[] = [$i, $j];
+            }
+        }
+
+        shuffle($positions); // Mezcla las posiciones para probar en orden aleatorio
+
+        foreach ($positions as [$row, $col]) {
+            if ($count <= 0) {
+                break;
+            }
 
             if ($this->board[$row][$col] != 0) {
-                $backup = $this->board[$row][$col]; // Hacer un respaldo del valor
-                $this->board[$row][$col] = 0; // Eliminar el valor
+                $backup = $this->board[$row][$col];
+                $this->board[$row][$col] = 0;
 
                 if ($this->hasUniqueSolution()) {
                     $count--;
                 } else {
-                    $this->board[$row][$col] = $backup; // Revertir el cambio
+                    $this->board[$row][$col] = $backup;
                 }
             }
         }
@@ -67,31 +78,33 @@ class SudokuGenerator extends Sudoku
 
     private function hasUniqueSolution(): bool
     {
-        return $this->countSolutions() === 1;
+        return $this->countSolutions(0, 0, 2) === 1;
     }
 
-    private function countSolutions(int $row = 0, int $col = 0): int
+    private function countSolutions(int $row = 0, int $col = 0, int $limit = 2): int
     {
         if ($row >= $this->size) {
-            return 1; // Solución encontrada
+            return 1;
         }
 
         if ($col >= $this->size) {
-            return $this->countSolutions($row + 1); // Ir a la siguiente fila
+            return $this->countSolutions($row + 1, 0, $limit); // Ir a la siguiente fila
         }
 
         if ($this->board[$row][$col] != 0) {
-            return $this->countSolutions($row, $col + 1); // Ir a la siguiente columna
+            return $this->countSolutions($row, $col + 1, $limit); // Ir a la siguiente columna
         }
 
         $count = 0;
         for ($num = 1; $num <= 9; $num++) {
             if ($this->isSafe($row, $col, $num)) {
-                $this->board[$row][$col] = $num; // Colocar el número
+                $this->board[$row][$col] = $num;
+                $count += $this->countSolutions($row, $col + 1, $limit); // Recursión
+                $this->board[$row][$col] = 0;
 
-                $count += $this->countSolutions($row, $col + 1); // Recursión
-
-                $this->board[$row][$col] = 0; // Limpiar para seguir probando
+                if ($count >= $limit) {
+                    return $count;
+                }
             }
         }
 
