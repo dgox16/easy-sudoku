@@ -12,8 +12,12 @@ export const Cell: FC<CellProps> = ({
     updateCellValue,
 }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (/[0-9]/.test(e.key)) {
-            updateCellValue(cell.id, Number(e.key));
+        const number = Number.parseInt(e.key, 10);
+
+        if (number >= 1 && number <= 9) {
+            updateCellValue(cell.id, number);
+        } else {
+            e.preventDefault();
         }
     };
 
