@@ -41,6 +41,7 @@ export const Cell: FC<CellProps> = ({
 
     return (
         <button
+            aria-label={cell.id}
             type={"button"}
             className={classList.join(" ").trim()}
             onKeyDown={(e) => {
@@ -51,7 +52,7 @@ export const Cell: FC<CellProps> = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
         >
-            <span className=" bor">{cell.value === 0 ? "" : cell.value}</span>
+            <span>{cell.value === 0 ? "" : cell.value}</span>
         </button>
     );
 };
