@@ -15,3 +15,10 @@ export const newMovementRequest = async (movement: NewMovementRequest) => {
     const res = await axios.post("sudoku/new-movement", movement);
     return res.data;
 };
+
+export const backwardRequest = async (
+    game: number,
+): Promise<GameMatrixType> => {
+    const res = await axios.get(`sudoku/backward?game=${game}`);
+    return res.data;
+};
