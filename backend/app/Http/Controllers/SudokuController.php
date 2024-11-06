@@ -97,7 +97,11 @@ class SudokuController extends Controller
                 'is_winning_movement' => $finished,
             ]);
 
-            return response()->json($newMovement);
+            return response()->json(
+                [
+                    'is_winning_movement' => $finished,
+                ]
+            );
         }
 
         return response()->json([
