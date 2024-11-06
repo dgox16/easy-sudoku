@@ -4,6 +4,7 @@ import {
     convertMatrixToGrid,
 } from "../libs/formatSudoku.ts";
 import {
+    backwardRequest,
     newGameRequest,
     newMovementRequest,
 } from "../services/sudokuRequests.ts";
@@ -76,6 +77,31 @@ export const useNewGame = () => {
         }, 300);
     };
 
+    const updateGridValues = (
+        currentGame: GameType,
+        newGame: GameType,
+    ): GameType => {
+        const updatedGrid = currentGame.sudoku.map((cell, index) => {
+            const newValue = newGame.sudoku[index].value;
+            return {
+                ...cell,
+                value: newValue, // Solo actualizamos la propiedad 'value'
+            };
+        });
+
+        return {
+            ...currentGame,
+            sudoku: updatedGrid,
+        };
+    };
+    const backwardMove = async (game_id: number) => {
+        const res = await backwardRequest(game_id);
+        const gameFormatted = convertMatrixToGrid(res);
+
+        const updatedGame = updateGridValues(game, gameFormatted);
+        setGame(updatedGame);
+    };
+
     const highlightMates = (cellMates: string[]) => {
         setGame((prevGame) => {
             return {
@@ -116,6 +142,7 @@ export const useNewGame = () => {
     return {
         game,
         updateCellValue,
+        backwardMove,
         highlightMates,
         highlightSameValue,
         clearHighlights,
