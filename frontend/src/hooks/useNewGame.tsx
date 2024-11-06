@@ -13,6 +13,7 @@ import type { GameType } from "../types/sudokuTypes.ts";
 
 export const useNewGame = () => {
     const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
+    const [victory, setVictory] = useState(false);
     const [timer, setTimer] = useState(0);
     const prevGameRef = useRef<GameType | null>(null);
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -20,7 +21,8 @@ export const useNewGame = () => {
     useEffect(() => {
         const fetchSudoku = async () => {
             try {
-                const gameResponse = await newGameRequest("hard");
+                setTimer(0);
+                const gameResponse = await newGameRequest("medium");
                 const gameFormatted = convertMatrixToGrid(gameResponse);
                 setGame(gameFormatted);
                 prevGameRef.current = gameFormatted;
@@ -29,7 +31,9 @@ export const useNewGame = () => {
                     setTimer((prevTimer) => prevTimer + 1);
                 }, 1000);
 
-                return () => clearInterval(interval);
+                return () => {
+                    clearInterval(interval);
+                };
             } catch (error) {
                 console.error("Error fetching sudoku:", error);
             }
@@ -74,7 +78,10 @@ export const useNewGame = () => {
                 current_grid: gameMatrix.sudoku,
             };
 
-            await newMovementRequest(movement);
+            const res = await newMovementRequest(movement);
+            if (res.is_winning_movement) {
+                setVictory(true);
+            }
         }, 300);
     };
 
@@ -174,6 +181,7 @@ export const useNewGame = () => {
         highlightMates,
         highlightSameValue,
         clearHighlights,
+        victory,
         formattedTime,
     };
 };
