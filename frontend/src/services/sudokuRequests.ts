@@ -7,3 +7,8 @@ export const newGameRequest = async (
     const res = await axios.get(`/sudoku/new-game?difficult=${difficult}`);
     return res.data;
 };
+
+export const newMovementRequest = async (movement) => {
+    const res = await axios.post("sudoku/new-movement", movement);
+    return res.data;
+};

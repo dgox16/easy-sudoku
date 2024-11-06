@@ -3,7 +3,10 @@ import {
     convertGridToMatrix,
     convertMatrixToGrid,
 } from "../libs/formatSudoku.ts";
-import { newGameRequest } from "../services/sudokuRequests.ts";
+import {
+    newGameRequest,
+    newMovementRequest,
+} from "../services/sudokuRequests.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
 
 export const useNewGame = () => {
@@ -85,19 +88,27 @@ export const useNewGame = () => {
     };
 
     useEffect(() => {
-        if (prevGameRef.current) {
-            game.sudoku.forEach((cell, index) => {
-                const prevCell = prevGameRef.current
-                    ? prevGameRef.current.sudoku[index]
-                    : null;
-                if (prevCell && cell.value !== prevCell.value) {
-                    const gameMatrix = convertGridToMatrix(game);
-                    console.log(gameMatrix);
-                    console.log(timer);
+        const movementHandler = async () => {
+            if (prevGameRef.current) {
+                for (const [index, cell] of game.sudoku.entries()) {
+                    const prevCell = prevGameRef.current.sudoku[index];
+                    if (prevCell && cell.value !== prevCell.value) {
+                        const gameMatrix = convertGridToMatrix(game);
+                        const movement = {
+                            game_id: gameMatrix.game,
+                            timer: timer,
+                            current_grid: gameMatrix.sudoku,
+                        };
+                        await newMovementRequest(movement);
+                    }
                 }
-            });
-        }
-        prevGameRef.current = game;
+            }
+            prevGameRef.current = game;
+        };
+
+        (async () => {
+            await movementHandler();
+        })();
     }, [game]);
 
     return {

@@ -17,7 +17,7 @@ class SudokuController extends Controller
     {
         $difficult = SudokuDifficult::from($request->difficult);
 
-        $generator = new SudokuGenerator();
+        $generator = new SudokuGenerator;
         $board = $generator->generate();
         $sudokuWithRemovedNumbers = $generator->removeNumbers($difficult);
 
@@ -35,7 +35,7 @@ class SudokuController extends Controller
         ]);
     }
 
-    function validateCurrentGrid(array $originalGrid, array $currentGrid): bool
+    public function validateCurrentGrid(array $originalGrid, array $currentGrid): bool
     {
         for ($row = 0; $row < 9; $row++) {
             for ($col = 0; $col < 9; $col++) {
@@ -46,10 +46,11 @@ class SudokuController extends Controller
                 }
             }
         }
+
         return true;
     }
 
-    function validateVictory(array $solutionGrid, array $currentGrid): bool
+    public function validateVictory(array $solutionGrid, array $currentGrid): bool
     {
         for ($row = 0; $row < 9; $row++) {
             for ($col = 0; $col < 9; $col++) {
@@ -58,10 +59,11 @@ class SudokuController extends Controller
                 }
             }
         }
+
         return true;
     }
 
-    function getNumberMovement($gameId)
+    public function getNumberMovement($gameId)
     {
         $movements = Movement::where('game_id', $gameId)->count();
 
@@ -86,11 +88,12 @@ class SudokuController extends Controller
                 'is_winning_movement' => $finished,
                 'is_backward' => false,
             ]);
+
             return response()->json($newMovement);
         }
 
         return response()->json([
-            'error' => "error"
+            'error' => 'error',
         ]);
     }
 }
