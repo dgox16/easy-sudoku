@@ -14,7 +14,7 @@ export const Sudoku = () => {
 
     return (
         <div className="flex flex-col justify-center items-center bg-polar-night-0">
-            <p className="text-snow-storm-2 font-medium text-xl mb-3">
+            <p className="text-snow-storm-2 font-medium text-2xl mb-3">
                 {formattedTime}
             </p>
             <div className="grid grid-cols-9 p-4 rounded-xl bg-polar-night-1">

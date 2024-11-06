@@ -31,9 +31,9 @@ export const Cell: FC<CellProps> = ({
     };
 
     const classList = [
-        "flex justify-center text-xl items-center size-10 border-2 border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white outline-none",
-        (cell.row === 3 || cell.row === 6) && "border-b-4",
-        (cell.column === 3 || cell.column === 6) && "border-r-4",
+        "flex justify-center text-2xl items-center size-12 border-[2px] border-polar-night-0 relative text-center focus:outline-transparent focus:bg-frost-3 focus:text-white outline-none",
+        (cell.row === 3 || cell.row === 6) && "border-b-[6px]",
+        (cell.column === 3 || cell.column === 6) && "border-r-[6px]",
         cell.isSameValue && "bg-frost-2 bg-opacity-50 text-snow-storm-2",
         cell.isHighlighted && "bg-frost-3 bg-opacity-20 text-snow-storm-2",
         cell.isEmpty ? "font-bold text-frost-1" : "font-bold text-snow-storm-2",
@@ -51,7 +51,7 @@ export const Cell: FC<CellProps> = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
         >
-            <span className="">{cell.value === 0 ? "" : cell.value}</span>
+            <span className=" bor">{cell.value === 0 ? "" : cell.value}</span>
         </button>
     );
 };

@@ -13,7 +13,6 @@ export const useNewGame = () => {
     const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
     const [timer, setTimer] = useState(0);
     const prevGameRef = useRef<GameType | null>(null);
-    const DEBOUNCE_TIME = 300;
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
@@ -74,7 +73,7 @@ export const useNewGame = () => {
             };
 
             await newMovementRequest(movement);
-        }, DEBOUNCE_TIME);
+        }, 300);
     };
 
     const highlightMates = (cellMates: string[]) => {
