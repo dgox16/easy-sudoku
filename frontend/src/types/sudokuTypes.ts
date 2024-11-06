@@ -9,3 +9,9 @@ export type GameType = {
     game: number;
     sudoku: CellType[];
 };
+
+export interface NewMovementRequest {
+    game_id: number;
+    timer: number;
+    current_grid: number[][];
+}

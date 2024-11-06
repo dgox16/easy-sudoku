@@ -1,4 +1,7 @@
-import type { GameMatrixType } from "../types/sudokuTypes.ts";
+import type {
+    GameMatrixType,
+    NewMovementRequest,
+} from "../types/sudokuTypes.ts";
 import axios from "./axios.ts";
 
 export const newGameRequest = async (
@@ -8,7 +11,7 @@ export const newGameRequest = async (
     return res.data;
 };
 
-export const newMovementRequest = async (movement) => {
+export const newMovementRequest = async (movement: NewMovementRequest) => {
     const res = await axios.post("sudoku/new-movement", movement);
     return res.data;
 };
