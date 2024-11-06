@@ -6,7 +6,7 @@ function App() {
         <div className="bg-polar-night-0 text-snow-storm-2 flex flex-col min-h-screen">
             <Navbar />
             <main className="flex flex-grow justify-center">
-                <div className="w-full lg:w-[1000px] sm:mt-16">
+                <div className="w-full lg:w-[1100px] sm:mt-16">
                     <Sudoku />
                 </div>
             </main>

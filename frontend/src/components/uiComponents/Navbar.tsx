@@ -1,7 +1,7 @@
 export const Navbar = () => {
     return (
         <div className="flex justify-center items-center h-12">
-            <div className="w-[1000px] justify-between items-center flex">
+            <div className="w-[1100px] justify-between items-center flex">
                 <p className="font-bold text-lg">EasySudoku</p>
                 <a
                     href="https://github.com/dgox16/easySudoku"
