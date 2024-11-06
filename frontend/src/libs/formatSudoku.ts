@@ -1,3 +1,4 @@
+import type { CellType } from "../types/cellTypes.ts";
 import type { GameMatrixType, GameType } from "../types/sudokuTypes.ts";
 
 const getCellBlock = (row: number, column: number) => {
@@ -5,9 +6,9 @@ const getCellBlock = (row: number, column: number) => {
 };
 
 export const convertMatrixToGrid = (sudoku: GameMatrixType): GameType => {
-    const grid = sudoku.sudoku.flatMap((row, rowIndex) => {
+    const grid: CellType[] = sudoku.sudoku.flatMap((row, rowIndex) => {
         return row.map((value: number, columnIndex: number) => ({
-            id: String.fromCharCode(97 + rowIndex) + (columnIndex + 1), // 'a' es 97 en ASCII
+            id: String.fromCharCode(97 + rowIndex) + (columnIndex + 1),
             column: columnIndex + 1,
             row: rowIndex + 1,
             block: getCellBlock(rowIndex + 1, columnIndex + 1),
@@ -23,6 +24,7 @@ export const convertMatrixToGrid = (sudoku: GameMatrixType): GameType => {
         sudoku: grid,
     };
 };
+
 export const convertGridToMatrix = (game: GameType): GameMatrixType => {
     const array: number[][] = Array.from({ length: 9 }, () => Array(9).fill(0));
 

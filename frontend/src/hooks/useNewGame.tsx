@@ -39,15 +39,37 @@ export const useNewGame = () => {
         `${String(Math.floor((timer % 3600) / 60)).padStart(2, "0")}:` +
         `${String(timer % 60).padStart(2, "0")}`;
 
-    const updateCellValue = (id: string, newValue: number) => {
+    const updateCellValue = async (id: string, newValue: number) => {
+        const cell = game.sudoku.find((cell) => cell.id === id);
+
+        if (cell && cell.value === newValue) {
+            return;
+        }
+
+        const updatedGame = game.sudoku.map((cell) =>
+            cell.id === id ? { ...cell, value: newValue } : cell,
+        );
+
         setGame((prevGame) => {
             return {
                 game: prevGame.game,
-                sudoku: prevGame.sudoku.map((cell) =>
-                    cell.id === id ? { ...cell, value: newValue } : cell,
-                ),
+                sudoku: updatedGame,
             };
         });
+
+        const gameMatrix = convertGridToMatrix({
+            ...game,
+            sudoku: updatedGame,
+        });
+
+        const movement = {
+            game_id: gameMatrix.game,
+            timer: timer,
+            current_grid: gameMatrix.sudoku,
+        };
+
+        console.log("jhola");
+        await newMovementRequest(movement);
     };
 
     const highlightMates = (cellMates: string[]) => {
@@ -86,30 +108,6 @@ export const useNewGame = () => {
             };
         });
     };
-
-    useEffect(() => {
-        const movementHandler = async () => {
-            if (prevGameRef.current) {
-                for (const [index, cell] of game.sudoku.entries()) {
-                    const prevCell = prevGameRef.current.sudoku[index];
-                    if (prevCell && cell.value !== prevCell.value) {
-                        const gameMatrix = convertGridToMatrix(game);
-                        const movement = {
-                            game_id: gameMatrix.game,
-                            timer: timer,
-                            current_grid: gameMatrix.sudoku,
-                        };
-                        await newMovementRequest(movement);
-                    }
-                }
-            }
-            prevGameRef.current = game;
-        };
-
-        (async () => {
-            await movementHandler();
-        })();
-    }, [game]);
 
     return {
         game,
