@@ -13,6 +13,8 @@ export const useNewGame = () => {
     const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
     const [timer, setTimer] = useState(0);
     const prevGameRef = useRef<GameType | null>(null);
+    const DEBOUNCE_TIME = 300;
+    const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
         const fetchSudoku = async () => {
@@ -50,26 +52,29 @@ export const useNewGame = () => {
             cell.id === id ? { ...cell, value: newValue } : cell,
         );
 
-        setGame((prevGame) => {
-            return {
-                game: prevGame.game,
-                sudoku: updatedGame,
-            };
-        });
-
-        const gameMatrix = convertGridToMatrix({
-            ...game,
+        setGame((prevGame) => ({
+            game: prevGame.game,
             sudoku: updatedGame,
-        });
+        }));
 
-        const movement = {
-            game_id: gameMatrix.game,
-            timer: timer,
-            current_grid: gameMatrix.sudoku,
-        };
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
 
-        console.log("jhola");
-        await newMovementRequest(movement);
+        debounceTimeout.current = setTimeout(async () => {
+            const gameMatrix = convertGridToMatrix({
+                ...game,
+                sudoku: updatedGame,
+            });
+
+            const movement = {
+                game_id: gameMatrix.game,
+                timer: timer,
+                current_grid: gameMatrix.sudoku,
+            };
+
+            await newMovementRequest(movement);
+        }, DEBOUNCE_TIME);
     };
 
     const highlightMates = (cellMates: string[]) => {
