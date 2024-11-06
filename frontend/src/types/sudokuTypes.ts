@@ -1,14 +1,4 @@
-export interface CellType {
-    block: number;
-    column: number;
-    id: string;
-    isHighlighted: boolean;
-    isSameValue: boolean;
-    row: number;
-    initialValue: number;
-    isEmpty: boolean;
-    value: number;
-}
+import type { CellType } from "./cellTypes";
 
 export type GameMatrixType = {
     game: number;
@@ -19,13 +9,3 @@ export type GameType = {
     game: number;
     sudoku: CellType[];
 };
-
-export interface CellProps {
-    cell: CellType;
-    cellMates: string[];
-    sameValueCells: string[];
-    highlightMates: (mates: string[]) => void;
-    highlightSameValue: (mates: string[]) => void;
-    clearHighlights: () => void;
-    updateCellValue: (id: string, newValue: number) => void;
-}

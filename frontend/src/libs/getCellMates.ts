@@ -1,4 +1,4 @@
-import type { CellType } from "../types/sudokuTypes.ts";
+import type { CellType } from "../types/cellTypes";
 
 export const getCellMates = (
     grid: CellType[],

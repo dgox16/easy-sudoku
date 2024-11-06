@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import type React from "react";
-import type { CellProps } from "../../types/sudokuTypes.ts";
+import type { CellProps } from "../../types/cellTypes";
 
 export const Cell: FC<CellProps> = ({
     cell,
