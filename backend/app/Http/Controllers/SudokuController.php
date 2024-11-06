@@ -95,7 +95,6 @@ class SudokuController extends Controller
                 'current_grid' => $request->current_grid,
                 'number_movement' => $this->getNumberMovement($request->game_id),
                 'is_winning_movement' => $finished,
-                'is_backward' => false,
             ]);
 
             return response()->json($newMovement);

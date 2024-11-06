@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('current_grid');
             $table->integer('number_movement');
             $table->boolean('is_winning_movement')->default(false);
-            $table->boolean('is_backward');
             $table->timestamps();
         });
     }
