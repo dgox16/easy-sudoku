@@ -31,6 +31,21 @@ export const Sudoku = () => {
                     />
                 ))}
             </div>
+            <div className="grid grid-cols-2 w-[350px] gap-x-7 mt-3">
+                <button
+                    type="button"
+                    className="bg-aurora-yellow rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-105 transition"
+                >
+                    Hint
+                </button>
+
+                <button
+                    type="button"
+                    className="bg-aurora-green rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-105 transition"
+                >
+                    Backward
+                </button>
+            </div>
         </div>
     );
 };
