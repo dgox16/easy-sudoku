@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
+use App\Http\Requests\backwardRequest;
 use App\Http\Requests\NewGameRequest;
 use App\Http\Requests\newMovementRequest;
 use App\Models\Game;
@@ -28,6 +29,14 @@ class SudokuController extends Controller
         ]);
 
         $game = Game::create(['sudoku_id' => $newSudoku->id]);
+
+        $newMovement = Movement::create([
+            'game_id' => $game->id,
+            'current_grid' => $sudokuWithRemovedNumbers,
+            'number_movement' => 1,
+            'is_winning_movement' => false,
+            'is_backward' => false,
+        ]);
 
         return response()->json([
             'game' => $game->id,
@@ -94,6 +103,24 @@ class SudokuController extends Controller
 
         return response()->json([
             'error' => 'error',
+        ]);
+    }
+
+    public function backwardMove(backwardRequest $request): JsonResponse
+    {
+        $lastMove = Movement::where('game_id', $request->game)->orderBy('number_movement', 'desc')->first();
+
+        if (!$lastMove || $lastMove->number_movement == 1) {
+            return response()->json(['message' => 'No hay movimientos para deshacer.'], 400);
+        }
+
+        $previousMove = Movement::where('game_id', $request->game)->where('number_movement', $lastMove->number_movement - 1)->first();
+
+        $lastMove->delete();
+
+        return response()->json([
+            'game' => $previousMove->game_id,
+            'sudoku' => $previousMove->current_grid,
         ]);
     }
 }

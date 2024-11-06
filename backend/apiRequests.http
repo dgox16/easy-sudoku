@@ -23,3 +23,9 @@ Content-Type: application/json
         [6, 0, 0, 0, 7, 0, 0, 0, 0]
     ]
 }
+
+###
+
+GET http://localhost:8000/sudoku/backward?game=7
+Accept: application/json
+Content-Type: application/json
