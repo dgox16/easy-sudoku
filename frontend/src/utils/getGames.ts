@@ -12,6 +12,7 @@ export const fetchSudoku = async (
         setTimer(0);
         const gameResponse = await newGameRequest("medium");
         const gameFormatted = convertMatrixToGrid(gameResponse);
+        console.log(gameFormatted);
         setGame(gameFormatted);
         prevGameRef.current = gameFormatted;
     } catch (error) {

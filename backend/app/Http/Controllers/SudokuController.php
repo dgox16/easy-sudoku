@@ -35,7 +35,6 @@ class SudokuController extends Controller
             'current_grid' => $sudokuWithRemovedNumbers,
             'number_movement' => 1,
             'is_winning_movement' => false,
-            'is_backward' => false,
         ]);
 
         return response()->json([
@@ -99,6 +98,7 @@ class SudokuController extends Controller
 
             return response()->json(
                 [
+                    'game' => $newMovement->current_grid,
                     'is_winning_movement' => $finished,
                 ]
             );
@@ -125,5 +125,41 @@ class SudokuController extends Controller
             'game' => $previousMove->game_id,
             'sudoku' => $previousMove->current_grid,
         ]);
+    }
+
+    public function searchHint(array $solutionGrid, array $currentGrid)
+    {
+
+        $emptyCells = [];
+        foreach ($currentGrid as $rowIndex => $row) {
+            foreach ($row as $colIndex => $cell) {
+                if ($cell === 0) {
+                    $emptyCells[] = [$rowIndex, $colIndex];
+                }
+            }
+        }
+
+        $randomCell = $emptyCells[array_rand($emptyCells)];
+        $row = $randomCell[0];
+        $column = $randomCell[1];
+
+        $hint = $solutionGrid[$row][$column];
+
+        return [
+            'row' => $row + 1,
+            'column' => $column + 1,
+            'hint' => $hint,
+        ];
+    }
+
+    public function getHint(backwardRequest $request): JsonResponse
+    {
+        $lastMove = Movement::where('game_id', $request->game)->orderBy('number_movement', 'desc')->first();
+        $currentGrid = $lastMove->current_grid;
+        $solution = $lastMove->game->sudoku->solution;
+
+        $hint = $this->searchHint($solution, $currentGrid);
+
+        return response()->json($hint);
     }
 }

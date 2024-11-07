@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property false|mixed|string $grid
  * @property SudokuDifficult|mixed $difficult
  * @property mixed $id
+ * @method static create(array $array)
  */
 class Sudoku extends Model
 {

@@ -3,7 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static where(string $string, mixed $game)
+ * @method static create(array $array)
+ */
 class Movement extends Model
 {
     protected $fillable = [
@@ -16,4 +21,9 @@ class Movement extends Model
     protected $casts = [
         'current_grid' => 'array',
     ];
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(Game::class);
+    }
 }
