@@ -11,7 +11,7 @@ enum SudokuDifficult: string
     {
         return match ($this) {
             self::EASY => 44,
-            self::MEDIUM => 48,
+            self::MEDIUM => 1,
             self::HARD => 52,
             self::INSANE => 56,
         };

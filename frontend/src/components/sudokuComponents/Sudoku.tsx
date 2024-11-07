@@ -1,12 +1,16 @@
 import Confetti from "react-confetti-boom";
 import { useNewGame } from "../../hooks/useNewGame.tsx";
-import { getCellMates, getSameValueCell } from "../../libs/getCellMates";
+import {
+    getCellMates,
+    getSameValueCell,
+} from "../../utils/getCellHighlight.ts";
 import { Cell } from "./Cell";
 
 export const Sudoku = () => {
     const {
         game,
         updateCellValue,
+        anotherGame,
         backwardMove,
         highlightMates,
         highlightSameValue,
@@ -46,6 +50,7 @@ export const Sudoku = () => {
                     <button
                         type="button"
                         className="bg-aurora-green rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-105 transition"
+                        onClick={() => anotherGame()}
                     >
                         Want to play again?
                     </button>

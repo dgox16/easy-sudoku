@@ -1,4 +1,4 @@
-import { GithubIcon } from "../../icons/GithubIcon";
+import { GithubIcon } from "../icons/GithubIcon";
 
 export const Navbar = () => {
     return (
