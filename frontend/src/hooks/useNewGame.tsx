@@ -9,6 +9,7 @@ import type { GameType } from "../types/sudokuTypes.ts";
 import {
     convertGridToMatrix,
     convertMatrixToGrid,
+    formatTime,
 } from "../utils/formatSudoku.ts";
 import { fetchSudoku } from "../utils/getGames.ts";
 
@@ -40,11 +41,6 @@ export const useNewGame = () => {
         setVictory(false);
         fetchSudoku(setTimer, setGame, prevGameRef);
     };
-
-    const formattedTime =
-        `${String(Math.floor(timer / 3600)).padStart(2, "0")}:` +
-        `${String(Math.floor((timer % 3600) / 60)).padStart(2, "0")}:` +
-        `${String(timer % 60).padStart(2, "0")}`;
 
     const updateCellValue = async (id: string, newValue: number) => {
         const cell = game.sudoku.find((cell) => cell.id === id);
@@ -102,6 +98,7 @@ export const useNewGame = () => {
             sudoku: updatedGrid,
         };
     };
+
     const backwardMove = async (game_id: number) => {
         try {
             const res = await backwardRequest(game_id);
@@ -152,6 +149,8 @@ export const useNewGame = () => {
             };
         });
     };
+
+    const formattedTime = formatTime(timer);
 
     return {
         game,

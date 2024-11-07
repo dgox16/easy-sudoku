@@ -34,3 +34,11 @@ export const convertGridToMatrix = (game: GameType): GameMatrixType => {
 
     return { game: game.game, sudoku: array };
 };
+
+export const formatTime = (timer: number): string => {
+    return (
+        `${String(Math.floor(timer / 3600)).padStart(2, "0")}:` +
+        `${String(Math.floor((timer % 3600) / 60)).padStart(2, "0")}:` +
+        `${String(timer % 60).padStart(2, "0")}`
+    );
+};
