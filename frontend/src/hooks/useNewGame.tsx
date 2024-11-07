@@ -34,12 +34,18 @@ export const useNewGame = () => {
     }, []);
 
     useEffect(() => {
-        fetchSudoku(setTimer, setGame, prevGameRef);
+        fetchSudoku(setTimer, setGame, prevGameRef).catch((error) => {
+            console.error("Error loading the game:", error);
+        });
     }, []);
 
-    const anotherGame = () => {
+    const anotherGame = async () => {
         setVictory(false);
-        fetchSudoku(setTimer, setGame, prevGameRef);
+        try {
+            await fetchSudoku(setTimer, setGame, prevGameRef);
+        } catch (error) {
+            console.error("Error starting a new game:", error);
+        }
     };
 
     const updateCellValue = async (id: string, newValue: number) => {
