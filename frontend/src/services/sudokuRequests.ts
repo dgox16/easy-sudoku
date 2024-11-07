@@ -22,3 +22,8 @@ export const backwardRequest = async (
     const res = await axios.get(`sudoku/backward?game=${game}`);
     return res.data;
 };
+
+export const getHintRequest = async (game: number) => {
+    const res = await axios.get(`sudoku/get-hint?game=${game}`);
+    return res.data;
+};

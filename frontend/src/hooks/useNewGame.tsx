@@ -3,8 +3,10 @@ import { toast } from "sonner";
 import { ErrorIcon } from "../components/icons/ErrorIcon.tsx";
 import {
     backwardRequest,
+    getHintRequest,
     newMovementRequest,
 } from "../services/sudokuRequests.ts";
+import type { CellType } from "../types/cellTypes.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
 import {
     convertGridToMatrix,
@@ -119,6 +121,48 @@ export const useNewGame = () => {
         }
     };
 
+    const updateGridWithHint = (
+        grid: CellType[],
+        hint: { row: number; column: number; hint: number },
+    ): CellType[] => {
+        return grid.map((cell) => {
+            // Verificar si la celda coincide con la posición de la pista
+            if (cell.row === hint.row && cell.column === hint.column) {
+                return {
+                    ...cell,
+                    value: hint.hint,
+                };
+            }
+            return cell; // Retornar la celda sin cambios si no coincide
+        });
+    };
+    const getHint = async (game_id: number) => {
+        const res = await getHintRequest(game_id);
+        const updatedGrid = updateGridWithHint(game.sudoku, res);
+
+        const gameMatrix = convertGridToMatrix({
+            ...game,
+            sudoku: updatedGrid,
+        });
+
+        const movement = {
+            game_id: gameMatrix.game,
+            timer: timer,
+            current_grid: gameMatrix.sudoku,
+        };
+
+        const resMovement = await newMovementRequest(movement);
+        if (resMovement.is_winning_movement) {
+            setVictory(true);
+        }
+        setGame((prevGame) => {
+            return {
+                game: prevGame.game,
+                sudoku: updatedGrid,
+            };
+        });
+    };
+
     const highlightMates = (cellMates: string[]) => {
         setGame((prevGame) => {
             return {
@@ -163,6 +207,7 @@ export const useNewGame = () => {
         updateCellValue,
         anotherGame,
         backwardMove,
+        getHint,
         highlightMates,
         highlightSameValue,
         clearHighlights,
