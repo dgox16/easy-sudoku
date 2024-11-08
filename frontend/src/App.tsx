@@ -16,10 +16,7 @@ function App() {
                     <p className="py-2 text-[12px] sm:text-[14px]">
                         © 2024 Diego Armando Gómez Martínez.
                         <span className="hidden sm:inline"> | </span>
-                        <br
-                            aria-hidden={true}
-                            className="block sm:hidden sha"
-                        />
+                        <br aria-hidden={true} className="block sm:hidden" />
                         Almost all rights reserved.
                     </p>
                 </div>
