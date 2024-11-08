@@ -85,7 +85,7 @@ export const useNewGame = () => {
             };
 
             const res = await newMovementRequest(movement);
-            if (res.is_winning_movement) {
+            if (res.isWinningMovement) {
                 setVictory(true);
             }
         }, 300);
@@ -122,7 +122,7 @@ export const useNewGame = () => {
             };
         });
 
-        if (res.is_winning_movement) {
+        if (res.isWinningMovement) {
             setVictory(true);
         }
     };

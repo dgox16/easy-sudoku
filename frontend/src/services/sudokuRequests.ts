@@ -1,5 +1,6 @@
 import type {
     GameMatrixType,
+    HintType,
     NewMovementRequest,
 } from "../types/sudokuTypes.ts";
 import axios from "./axios.ts";
@@ -23,7 +24,10 @@ export const backwardRequest = async (
     return res.data;
 };
 
-export const getHintRequest = async (game: number, timer: number) => {
+export const getHintRequest = async (
+    game: number,
+    timer: number,
+): Promise<HintType> => {
     const res = await axios.get(`sudoku/get-hint?game=${game}&timer=${timer}`);
     return res.data;
 };

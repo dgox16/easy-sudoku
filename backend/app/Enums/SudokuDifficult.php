@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Enums;
 
 enum SudokuDifficult: string
@@ -7,6 +8,7 @@ enum SudokuDifficult: string
     case MEDIUM = 'medium';
     case HARD = 'hard';
     case INSANE = 'insane';
+
     public function getCount(): int
     {
         return match ($this) {

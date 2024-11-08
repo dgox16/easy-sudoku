@@ -15,3 +15,10 @@ export interface NewMovementRequest {
     timer: number;
     current_grid: number[][];
 }
+
+export interface HintType {
+    row: number;
+    column: number;
+    hint: number;
+    isWinningMovement: boolean;
+}

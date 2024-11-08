@@ -1,4 +1,5 @@
 import type { CellType } from "../types/cellTypes.ts";
+import type { HintType } from "../types/sudokuTypes.ts";
 
 export const updateGridValues = (
     currentGrid: CellType[],
@@ -25,7 +26,7 @@ export const updateGridWithId = (
 
 export const updateGridWithHint = (
     grid: CellType[],
-    hint: { row: number; column: number; hint: number },
+    hint: HintType,
 ): CellType[] => {
     return grid.map((cell) => {
         if (cell.row === hint.row && cell.column === hint.column) {

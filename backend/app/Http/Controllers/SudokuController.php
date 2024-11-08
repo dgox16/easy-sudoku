@@ -99,8 +99,7 @@ class SudokuController extends Controller
 
             return response()->json(
                 [
-                    'game' => $newMovement->current_grid,
-                    'is_winning_movement' => $finished,
+                    'isWinningMovement' => $finished,
                 ]
             );
         }
@@ -182,7 +181,7 @@ class SudokuController extends Controller
             'row' => $hint['row'] + 1,
             'column' => $hint['column'] + 1,
             'hint' => $hint['hint'],
-            'is_winning_movement' => $finished,
+            'isWinningMovement' => $finished,
         ]);
     }
 }
