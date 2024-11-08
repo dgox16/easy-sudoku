@@ -44,21 +44,6 @@ class SudokuController extends Controller
         ]);
     }
 
-    public function validateCurrentGrid(array $originalGrid, array $currentGrid): bool
-    {
-        for ($row = 0; $row < 9; $row++) {
-            for ($col = 0; $col < 9; $col++) {
-                if ($originalGrid[$row][$col] !== 0) {
-                    if ($currentGrid[$row][$col] !== $originalGrid[$row][$col]) {
-                        return false; // Si no coincide, retorna false
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
     public function validateVictory(array $solutionGrid, array $currentGrid): bool
     {
         for ($row = 0; $row < 9; $row++) {
@@ -82,31 +67,24 @@ class SudokuController extends Controller
     public function newMovement(newMovementRequest $request): JsonResponse
     {
         $game = Game::find($request->game_id);
-        $isGood = $this->validateCurrentGrid($game->sudoku->grid, $request->current_grid);
-        if ($isGood) {
-            $finished = $this->validateVictory(
-                $game->sudoku->solution, $request->current_grid
-            );
-            $game->timer_seconds = $request->timer;
-            $game->finished = $finished;
-            $game->save();
-            $newMovement = Movement::create([
-                'game_id' => $request->game_id,
-                'current_grid' => $request->current_grid,
-                'number_movement' => $this->getNumberMovement($request->game_id),
-                'is_winning_movement' => $finished,
-            ]);
-
-            return response()->json(
-                [
-                    'isWinningMovement' => $finished,
-                ]
-            );
-        }
-
-        return response()->json([
-            'error' => 'error',
+        $finished = $this->validateVictory(
+            $game->sudoku->solution, $request->current_grid
+        );
+        $game->timer_seconds = $request->timer;
+        $game->finished = $finished;
+        $game->save();
+        $newMovement = Movement::create([
+            'game_id' => $request->game_id,
+            'current_grid' => $request->current_grid,
+            'number_movement' => $this->getNumberMovement($request->game_id),
+            'is_winning_movement' => $finished,
         ]);
+
+        return response()->json(
+            [
+                'isWinningMovement' => $finished,
+            ]
+        );
     }
 
     public function backwardMove(backwardRequest $request): JsonResponse
