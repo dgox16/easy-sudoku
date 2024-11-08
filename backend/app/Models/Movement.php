@@ -16,6 +16,7 @@ class Movement extends Model
         'current_grid',
         'number_movement',
         'is_winning_movement',
+        'is_hint'
     ];
 
     protected $casts = [

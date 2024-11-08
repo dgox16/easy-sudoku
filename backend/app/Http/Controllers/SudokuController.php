@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
+use App\Helpers\SudokuHelper;
 use App\Http\Requests\backwardRequest;
 use App\Http\Requests\hintRequest;
 use App\Http\Requests\NewGameRequest;
@@ -36,6 +37,7 @@ class SudokuController extends Controller
             'current_grid' => $sudokuWithRemovedNumbers,
             'number_movement' => 1,
             'is_winning_movement' => false,
+            'is_hint' => false
         ]);
 
         return response()->json([
@@ -44,25 +46,6 @@ class SudokuController extends Controller
         ]);
     }
 
-    public function validateVictory(array $solutionGrid, array $currentGrid): bool
-    {
-        for ($row = 0; $row < 9; $row++) {
-            for ($col = 0; $col < 9; $col++) {
-                if ($currentGrid[$row][$col] !== $solutionGrid[$row][$col]) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    public function getNumberMovement($gameId)
-    {
-        $movements = Movement::where('game_id', $gameId)->count();
-
-        return $movements === 0 ? 1 : $movements + 1;
-    }
 
     public function newMovement(newMovementRequest $request): JsonResponse
     {
@@ -75,7 +58,7 @@ class SudokuController extends Controller
         $lastGrid[$request->row][$request->column] = $request->value;
 
         $game = Game::find($request->game);
-        $finished = $this->validateVictory(
+        $finished = SudokuHelper::validateVictory(
             $game->sudoku->solution, $lastGrid
         );
         $game->timer_seconds = $request->timer;
@@ -84,8 +67,9 @@ class SudokuController extends Controller
         Movement::create([
             'game_id' => $request->game,
             'current_grid' => $lastGrid,
-            'number_movement' => $this->getNumberMovement($request->game),
+            'number_movement' => SudokuHelper::getNumberMovement($request->game),
             'is_winning_movement' => $finished,
+            'is_hint' => false
         ]);
 
         return response()->json(
@@ -113,32 +97,6 @@ class SudokuController extends Controller
         ]);
     }
 
-    public function searchHint(array $solutionGrid, array $currentGrid): array
-    {
-        $emptyCells = [];
-        foreach ($currentGrid as $rowIndex => $row) {
-            foreach ($row as $colIndex => $cell) {
-                if ($cell === 0) {
-                    $emptyCells[] = [$rowIndex, $colIndex];
-                }
-            }
-        }
-
-        $randomCell = $emptyCells[array_rand($emptyCells)];
-        $row = $randomCell[0];
-        $column = $randomCell[1];
-
-        $hint = $solutionGrid[$row][$column];
-
-        $currentGrid[$row][$column] = $hint;
-
-        return [
-            'row' => $row,
-            'column' => $column,
-            'hint' => $hint,
-            'updatedGrid' => $currentGrid,
-        ];
-    }
 
     public function getHint(hintRequest $request): JsonResponse
     {
@@ -146,9 +104,9 @@ class SudokuController extends Controller
         $currentGrid = $lastMove->current_grid;
         $game = $lastMove->game;
 
-        $hint = $this->searchHint($game->sudoku->solution, $currentGrid);
+        $hint = SudokuHelper::searchHint($game->sudoku->solution, $currentGrid);
 
-        $finished = $this->validateVictory(
+        $finished = SudokuHelper::validateVictory(
             $game->sudoku->solution, $hint['updatedGrid']
         );
 
@@ -159,8 +117,9 @@ class SudokuController extends Controller
         Movement::create([
             'game_id' => $request->game,
             'current_grid' => $hint['updatedGrid'],
-            'number_movement' => $this->getNumberMovement($request->game),
+            'number_movement' => SudokuHelper::getNumberMovement($request->game),
             'is_winning_movement' => $finished,
+            'is_hint' => true
         ]);
 
         return response()->json([

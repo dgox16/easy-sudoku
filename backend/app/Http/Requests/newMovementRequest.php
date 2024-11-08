@@ -6,9 +6,11 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property mixed $current_grid
  * @property mixed $timer
  * @property mixed $game
+ * @property mixed $row
+ * @property mixed $column
+ * @property mixed $value
  */
 class newMovementRequest extends FormRequest
 {
