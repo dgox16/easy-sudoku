@@ -2,21 +2,16 @@ import type { CellType } from "../types/cellTypes.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
 
 export const updateGridValues = (
-    currentGame: GameType,
-    newGame: GameType,
-): GameType => {
-    const updatedGrid = currentGame.sudoku.map((cell, index) => {
-        const newValue = newGame.sudoku[index].value;
+    currentGrid: CellType[],
+    newGrid: CellType[],
+): CellType[] => {
+    return currentGrid.map((cell, index) => {
+        const newValue = newGrid[index].value;
         return {
             ...cell,
             value: newValue,
         };
     });
-
-    return {
-        ...currentGame,
-        sudoku: updatedGrid,
-    };
 };
 
 export const updateGridWithId = (

@@ -96,8 +96,14 @@ export const useNewGame = () => {
             const res = await backwardRequest(game_id);
             const gameFormatted = convertMatrixToGrid(res);
 
-            const updatedGame = updateGridValues(game, gameFormatted);
-            setGame(updatedGame);
+            const updatedGame = updateGridValues(
+                game.sudoku,
+                gameFormatted.sudoku,
+            );
+            setGame({
+                game: game.game,
+                sudoku: updatedGame,
+            });
         } catch (e) {
             toast.error("You can't go back any further", {
                 icon: <ErrorIcon />,
