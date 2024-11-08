@@ -112,30 +112,19 @@ export const useNewGame = () => {
     };
 
     const getHint = async (game_id: number) => {
-        const res = await getHintRequest(game_id);
+        const res = await getHintRequest(game_id, timer);
         const updatedGrid = updateGridWithHint(game.sudoku, res);
 
-        const gameMatrix = convertGridToMatrix({
-            ...game,
-            sudoku: updatedGrid,
-        });
-
-        const movement = {
-            game_id: gameMatrix.game,
-            timer: timer,
-            current_grid: gameMatrix.sudoku,
-        };
-
-        const resMovement = await newMovementRequest(movement);
-        if (resMovement.is_winning_movement) {
-            setVictory(true);
-        }
         setGame((prevGame) => {
             return {
                 game: prevGame.game,
                 sudoku: updatedGrid,
             };
         });
+
+        if (res.is_winning_movement) {
+            setVictory(true);
+        }
     };
 
     const highlightMates = (cellMates: string[]) => {

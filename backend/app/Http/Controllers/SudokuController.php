@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\SudokuDifficult;
 use App\Http\Requests\backwardRequest;
+use App\Http\Requests\hintRequest;
 use App\Http\Requests\NewGameRequest;
 use App\Http\Requests\newMovementRequest;
 use App\Models\Game;
@@ -127,7 +128,7 @@ class SudokuController extends Controller
         ]);
     }
 
-    public function searchHint(array $solutionGrid, array $currentGrid)
+    public function searchHint(array $solutionGrid, array $currentGrid): array
     {
         $emptyCells = [];
         foreach ($currentGrid as $rowIndex => $row) {
@@ -144,21 +145,44 @@ class SudokuController extends Controller
 
         $hint = $solutionGrid[$row][$column];
 
+        $currentGrid[$row][$column] = $hint;
+
         return [
-            'row' => $row + 1,
-            'column' => $column + 1,
+            'row' => $row,
+            'column' => $column,
             'hint' => $hint,
+            'updatedGrid' => $currentGrid,
         ];
     }
 
-    public function getHint(backwardRequest $request): JsonResponse
+    public function getHint(hintRequest $request): JsonResponse
     {
         $lastMove = Movement::where('game_id', $request->game)->orderBy('number_movement', 'desc')->first();
         $currentGrid = $lastMove->current_grid;
-        $solution = $lastMove->game->sudoku->solution;
+        $game = $lastMove->game;
 
-        $hint = $this->searchHint($solution, $currentGrid);
+        $hint = $this->searchHint($game->sudoku->solution, $currentGrid);
 
-        return response()->json($hint);
+        $finished = $this->validateVictory(
+            $game->sudoku->solution, $hint['updatedGrid']
+        );
+
+        $game->timer_seconds = $request->timer;
+        $game->finished = $finished;
+        $game->save();
+
+        Movement::create([
+            'game_id' => $request->game,
+            'current_grid' => $hint['updatedGrid'],
+            'number_movement' => $this->getNumberMovement($request->game),
+            'is_winning_movement' => $finished,
+        ]);
+
+        return response()->json([
+            'row' => $hint['row'] + 1,
+            'column' => $hint['column'] + 1,
+            'hint' => $hint['hint'],
+            'is_winning_movement' => $finished,
+        ]);
     }
 }
