@@ -1,7 +1,6 @@
 import type { CellType } from "../types/cellTypes.ts";
-import type { HintType } from "../types/sudokuTypes.ts";
 
-export const updateGridValues = (
+export const updateAllGrid = (
     currentGrid: CellType[],
     newGrid: CellType[],
 ): CellType[] => {
@@ -14,25 +13,17 @@ export const updateGridValues = (
     });
 };
 
-export const updateGridWithId = (
-    currentGrid: CellType[],
-    id: string,
-    newValue: number,
-): CellType[] => {
-    return currentGrid.map((cell) =>
-        cell.id === id ? { ...cell, value: newValue } : cell,
-    );
-};
-
-export const updateGridWithHint = (
+export const updateGridWithRowColumn = (
     grid: CellType[],
-    hint: HintType,
+    row: number,
+    column: number,
+    value: number,
 ): CellType[] => {
     return grid.map((cell) => {
-        if (cell.row === hint.row && cell.column === hint.column) {
+        if (cell.row === row && cell.column === column) {
             return {
                 ...cell,
-                value: hint.hint,
+                value: value,
             };
         }
         return cell;

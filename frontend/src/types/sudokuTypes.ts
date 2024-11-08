@@ -11,9 +11,11 @@ export type GameType = {
 };
 
 export interface NewMovementRequest {
-    game_id: number;
+    game: number;
+    row: number;
+    column: number;
+    value: number;
     timer: number;
-    current_grid: number[][];
 }
 
 export interface HintType {

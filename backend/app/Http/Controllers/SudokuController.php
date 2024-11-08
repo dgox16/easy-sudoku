@@ -66,17 +66,25 @@ class SudokuController extends Controller
 
     public function newMovement(newMovementRequest $request): JsonResponse
     {
-        $game = Game::find($request->game_id);
+        $lastGrid = Movement::where('game_id', $request->game)
+            ->orderBy('number_movement', 'desc')
+            ->first()
+            ->current_grid;
+
+
+        $lastGrid[$request->row][$request->column] = $request->value;
+
+        $game = Game::find($request->game);
         $finished = $this->validateVictory(
-            $game->sudoku->solution, $request->current_grid
+            $game->sudoku->solution, $lastGrid
         );
         $game->timer_seconds = $request->timer;
         $game->finished = $finished;
         $game->save();
-        $newMovement = Movement::create([
-            'game_id' => $request->game_id,
-            'current_grid' => $request->current_grid,
-            'number_movement' => $this->getNumberMovement($request->game_id),
+        Movement::create([
+            'game_id' => $request->game,
+            'current_grid' => $lastGrid,
+            'number_movement' => $this->getNumberMovement($request->game),
             'is_winning_movement' => $finished,
         ]);
 

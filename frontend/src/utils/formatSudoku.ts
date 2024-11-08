@@ -25,16 +25,6 @@ export const convertMatrixToGrid = (sudoku: GameMatrixType): GameType => {
     };
 };
 
-export const convertGridToMatrix = (game: GameType): GameMatrixType => {
-    const array: number[][] = Array.from({ length: 9 }, () => Array(9).fill(0));
-
-    for (const cell of game.sudoku) {
-        array[cell.row][cell.column] = cell.value;
-    }
-
-    return { game: game.game, sudoku: array };
-};
-
 export const formatTime = (timer: number): string => {
     return (
         `${String(Math.floor(timer / 3600)).padStart(2, "0")}:` +

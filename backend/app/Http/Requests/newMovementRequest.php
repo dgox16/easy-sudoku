@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property mixed $current_grid
  * @property mixed $timer
- * @property mixed $game_id
+ * @property mixed $game
  */
 class newMovementRequest extends FormRequest
 {
@@ -28,10 +28,10 @@ class newMovementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'game_id' => 'required|integer|exists:games,id',
-            'current_grid' => 'required|array|size:9',
-            'current_grid.*' => 'array|size:9',
-            'current_grid.*.*' => 'integer|min:0|max:9',
+            'game' => 'required|integer|exists:games,id',
+            'row' => 'required|integer',
+            'column' => 'required|integer',
+            'value' => 'required|integer',
             'timer' => 'required|integer',
         ];
     }

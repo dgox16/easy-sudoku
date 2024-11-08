@@ -7,17 +7,9 @@ import {
     newMovementRequest,
 } from "../services/sudokuRequests.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
-import {
-    convertGridToMatrix,
-    convertMatrixToGrid,
-    formatTime,
-} from "../utils/formatSudoku.ts";
+import { convertMatrixToGrid, formatTime } from "../utils/formatSudoku.ts";
 import { fetchSudoku } from "../utils/getGames.ts";
-import {
-    updateGridValues,
-    updateGridWithHint,
-    updateGridWithId,
-} from "../utils/updateGame.ts";
+import { updateAllGrid, updateGridWithRowColumn } from "../utils/updateGame.ts";
 
 export const useNewGame = () => {
     const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
@@ -40,8 +32,10 @@ export const useNewGame = () => {
     }, []);
 
     useEffect(() => {
-        fetchSudoku(setTimer, setGame, prevGameRef).catch((error) => {
-            console.error("Error loading the game:", error);
+        fetchSudoku(setTimer, setGame, prevGameRef).catch((_error) => {
+            toast.error("Error loading the game:", {
+                icon: <ErrorIcon />,
+            });
         });
     }, []);
 
@@ -50,18 +44,31 @@ export const useNewGame = () => {
         try {
             await fetchSudoku(setTimer, setGame, prevGameRef);
         } catch (error) {
-            console.error("Error starting a new game:", error);
+            toast.error("Error starting a new game", {
+                icon: <ErrorIcon />,
+            });
         }
     };
 
-    const updateCellValue = async (id: string, newValue: number) => {
-        const cell = game.sudoku.find((cell) => cell.id === id);
+    const updateCellValue = async (
+        row: number,
+        column: number,
+        newValue: number,
+    ) => {
+        const cell = game.sudoku.find(
+            (cell) => cell.row === row && cell.column === column,
+        );
 
         if (cell && cell.value === newValue) {
             return;
         }
 
-        const updatedGame = updateGridWithId(game.sudoku, id, newValue);
+        const updatedGame = updateGridWithRowColumn(
+            game.sudoku,
+            row,
+            column,
+            newValue,
+        );
 
         setGame((prevGame) => ({
             game: prevGame.game,
@@ -73,15 +80,12 @@ export const useNewGame = () => {
         }
 
         debounceTimeout.current = setTimeout(async () => {
-            const gameMatrix = convertGridToMatrix({
-                ...game,
-                sudoku: updatedGame,
-            });
-
             const movement = {
-                game_id: gameMatrix.game,
+                game: game.game,
                 timer: timer,
-                current_grid: gameMatrix.sudoku,
+                row: row,
+                column: column,
+                value: newValue,
             };
 
             const res = await newMovementRequest(movement);
@@ -96,7 +100,7 @@ export const useNewGame = () => {
             const res = await backwardRequest(game_id);
             const gameFormatted = convertMatrixToGrid(res);
 
-            const updatedGame = updateGridValues(
+            const updatedGame = updateAllGrid(
                 game.sudoku,
                 gameFormatted.sudoku,
             );
@@ -113,7 +117,12 @@ export const useNewGame = () => {
 
     const getHint = async (game_id: number) => {
         const res = await getHintRequest(game_id, timer);
-        const updatedGrid = updateGridWithHint(game.sudoku, res);
+        const updatedGrid = updateGridWithRowColumn(
+            game.sudoku,
+            res.row,
+            res.column,
+            res.hint,
+        );
 
         setGame((prevGame) => {
             return {

@@ -15,7 +15,7 @@ export const Cell: FC<CellProps> = ({
         const number = Number.parseInt(e.key, 10);
 
         if (number >= 0 && number <= 9) {
-            updateCellValue(cell.id, number);
+            updateCellValue(cell.row, cell.column, number);
         } else {
             e.preventDefault();
         }
