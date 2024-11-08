@@ -178,8 +178,8 @@ class SudokuController extends Controller
         ]);
 
         return response()->json([
-            'row' => $hint['row'] + 1,
-            'column' => $hint['column'] + 1,
+            'row' => $hint['row'],
+            'column' => $hint['column'],
             'hint' => $hint['hint'],
             'isWinningMovement' => $finished,
         ]);
