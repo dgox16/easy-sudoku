@@ -19,6 +19,16 @@ export const updateGridValues = (
     };
 };
 
+export const updateGridWithId = (
+    game: GameType,
+    id: string,
+    newValue: number,
+) => {
+    return game.sudoku.map((cell) =>
+        cell.id === id ? { ...cell, value: newValue } : cell,
+    );
+};
+
 export const updateGridWithHint = (
     grid: CellType[],
     hint: { row: number; column: number; hint: number },

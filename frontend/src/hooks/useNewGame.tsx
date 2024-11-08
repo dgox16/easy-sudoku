@@ -13,7 +13,11 @@ import {
     formatTime,
 } from "../utils/formatSudoku.ts";
 import { fetchSudoku } from "../utils/getGames.ts";
-import { updateGridValues, updateGridWithHint } from "../utils/updateGame.ts";
+import {
+    updateGridValues,
+    updateGridWithHint,
+    updateGridWithId,
+} from "../utils/updateGame.ts";
 
 export const useNewGame = () => {
     const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
@@ -57,9 +61,7 @@ export const useNewGame = () => {
             return;
         }
 
-        const updatedGame = game.sudoku.map((cell) =>
-            cell.id === id ? { ...cell, value: newValue } : cell,
-        );
+        const updatedGame = updateGridWithId(game, id, newValue);
 
         setGame((prevGame) => ({
             game: prevGame.game,
