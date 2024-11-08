@@ -61,7 +61,7 @@ export const useNewGame = () => {
             return;
         }
 
-        const updatedGame = updateGridWithId(game, id, newValue);
+        const updatedGame = updateGridWithId(game.sudoku, id, newValue);
 
         setGame((prevGame) => ({
             game: prevGame.game,

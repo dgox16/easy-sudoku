@@ -1,5 +1,4 @@
 import type { CellType } from "../types/cellTypes.ts";
-import type { GameType } from "../types/sudokuTypes.ts";
 
 export const updateGridValues = (
     currentGrid: CellType[],
@@ -15,11 +14,11 @@ export const updateGridValues = (
 };
 
 export const updateGridWithId = (
-    game: GameType,
+    currentGrid: CellType[],
     id: string,
     newValue: number,
-) => {
-    return game.sudoku.map((cell) =>
+): CellType[] => {
+    return currentGrid.map((cell) =>
         cell.id === id ? { ...cell, value: newValue } : cell,
     );
 };
