@@ -30,7 +30,7 @@ class SudokuController extends Controller
 
         $game = Game::create(['sudoku_id' => $newSudoku->id]);
 
-        $newMovement = Movement::create([
+        Movement::create([
             'game_id' => $game->id,
             'current_grid' => $sudokuWithRemovedNumbers,
             'number_movement' => 1,
@@ -129,7 +129,6 @@ class SudokuController extends Controller
 
     public function searchHint(array $solutionGrid, array $currentGrid)
     {
-
         $emptyCells = [];
         foreach ($currentGrid as $rowIndex => $row) {
             foreach ($row as $colIndex => $cell) {
