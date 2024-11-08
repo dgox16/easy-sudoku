@@ -31,7 +31,7 @@ export const Sudoku = () => {
                     {formattedTime}
                 </p>
             )}
-            <div className="grid grid-cols-9 p-4 rounded-xl bg-polar-night-1">
+            <div className="grid grid-cols-9 p-3 lg:p-4 rounded-xl bg-polar-night-1">
                 {game.sudoku.map((cell) => (
                     <Cell
                         cell={cell}
