@@ -81,13 +81,17 @@ class SudokuController extends Controller
 
     public function backwardMove(backwardRequest $request): JsonResponse
     {
-        $lastMove = Movement::where('game_id', $request->game)->orderBy('number_movement', 'desc')->first();
+        $lastMove = Movement::where('game_id', $request->game)
+            ->orderBy('number_movement', 'desc')
+            ->first();
 
         if (!$lastMove || $lastMove->number_movement == 1) {
             return response()->json(['message' => 'No hay movimientos para deshacer.'], 400);
         }
 
-        $previousMove = Movement::where('game_id', $request->game)->where('number_movement', $lastMove->number_movement - 1)->first();
+        $previousMove = Movement::where('game_id', $request->game)
+            ->where('number_movement', $lastMove->number_movement - 1)
+            ->first();
 
         $lastMove->delete();
 

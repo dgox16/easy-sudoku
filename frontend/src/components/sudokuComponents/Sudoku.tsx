@@ -1,5 +1,6 @@
 import Confetti from "react-confetti-boom";
 import { useNewGame } from "../../hooks/useNewGame.tsx";
+import { useGameStore } from "../../store/useGameStore.ts";
 import {
     getCellMates,
     getSameValueCell,
@@ -7,8 +8,8 @@ import {
 import { Cell } from "./Cell";
 
 export const Sudoku = () => {
+    const { game } = useGameStore();
     const {
-        game,
         updateCellValue,
         anotherGame,
         backwardMove,

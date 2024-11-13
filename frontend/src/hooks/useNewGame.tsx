@@ -6,13 +6,14 @@ import {
     getHintRequest,
     newMovementRequest,
 } from "../services/sudokuRequests.ts";
+import { useGameStore } from "../store/useGameStore.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
 import { convertMatrixToGrid, formatTime } from "../utils/formatSudoku.ts";
 import { fetchSudoku } from "../utils/getGames.ts";
 import { updateAllGrid, updateGridWithRowColumn } from "../utils/updateGame.ts";
 
 export const useNewGame = () => {
-    const [game, setGame] = useState<GameType>({ game: 0, sudoku: [] });
+    const { game, setGame } = useGameStore();
     const [victory, setVictory] = useState(false);
     const [timer, setTimer] = useState(0);
     const prevGameRef = useRef<GameType | null>(null);
@@ -32,8 +33,8 @@ export const useNewGame = () => {
     }, []);
 
     useEffect(() => {
-        fetchSudoku(setTimer, setGame, prevGameRef).catch((_error) => {
-            toast.error("Error loading the game:", {
+        fetchSudoku(setTimer, setGame, prevGameRef).catch((error) => {
+            toast.error(`Error loading the game: ${error.message}`, {
                 icon: <ErrorIcon />,
             });
         });
@@ -70,10 +71,10 @@ export const useNewGame = () => {
             newValue,
         );
 
-        setGame((prevGame) => ({
-            game: prevGame.game,
+        setGame({
+            game: game.game,
             sudoku: updatedGame,
-        }));
+        });
 
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
@@ -124,11 +125,9 @@ export const useNewGame = () => {
             res.hint,
         );
 
-        setGame((prevGame) => {
-            return {
-                game: prevGame.game,
-                sudoku: updatedGrid,
-            };
+        setGame({
+            game: game.game,
+            sudoku: updatedGrid,
         });
 
         if (res.isWinningMovement) {
@@ -137,46 +136,39 @@ export const useNewGame = () => {
     };
 
     const highlightMates = (cellMates: string[]) => {
-        setGame((prevGame) => {
-            return {
-                game: prevGame.game,
-                sudoku: prevGame.sudoku.map((cell) => ({
-                    ...cell,
-                    isHighlighted: cellMates.includes(cell.id),
-                })),
-            };
+        setGame({
+            game: game.game,
+            sudoku: game.sudoku.map((cell) => ({
+                ...cell,
+                isHighlighted: cellMates.includes(cell.id),
+            })),
         });
     };
 
     const highlightSameValue = (cellMates: string[]) => {
-        setGame((prevGame) => {
-            return {
-                game: prevGame.game,
-                sudoku: prevGame.sudoku.map((cell) => ({
-                    ...cell,
-                    isSameValue: cellMates.includes(cell.id),
-                })),
-            };
+        setGame({
+            game: game.game,
+            sudoku: game.sudoku.map((cell) => ({
+                ...cell,
+                isSameValue: cellMates.includes(cell.id),
+            })),
         });
     };
 
     const clearHighlights = () => {
-        setGame((prevGame) => {
-            return {
-                game: prevGame.game,
-                sudoku: prevGame.sudoku.map((cell) => ({
-                    ...cell,
-                    isHighlighted: false,
-                    isSameValue: false,
-                })),
-            };
+        setGame({
+            game: game.game,
+            sudoku: game.sudoku.map((cell) => ({
+                ...cell,
+                isHighlighted: false,
+                isSameValue: false,
+            })),
         });
     };
 
     const formattedTime = formatTime(timer);
 
     return {
-        game,
         updateCellValue,
         anotherGame,
         backwardMove,

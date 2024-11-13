@@ -5,7 +5,7 @@ import { convertMatrixToGrid } from "./formatSudoku.ts";
 
 export const fetchSudoku = async (
     setTimer: React.Dispatch<React.SetStateAction<number>>,
-    setGame: React.Dispatch<React.SetStateAction<GameType>>,
+    setGame: (newGame: GameType) => void,
     prevGameRef: React.MutableRefObject<GameType | null>,
 ) => {
     try {
