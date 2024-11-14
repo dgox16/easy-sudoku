@@ -136,22 +136,13 @@ export const useNewGame = () => {
         }
     };
 
-    const highlightMates = (cellMates: string[]) => {
+    const highlightMates = (cellMates: string[], sameValueCell: string[]) => {
         setGame({
             game: game.game,
             sudoku: game.sudoku.map((cell) => ({
                 ...cell,
                 isHighlighted: cellMates.includes(cell.id),
-            })),
-        });
-    };
-
-    const highlightSameValue = (cellMates: string[]) => {
-        setGame({
-            game: game.game,
-            sudoku: game.sudoku.map((cell) => ({
-                ...cell,
-                isSameValue: cellMates.includes(cell.id),
+                isSameValue: sameValueCell.includes(cell.id),
             })),
         });
     };
@@ -175,7 +166,6 @@ export const useNewGame = () => {
         backwardMove,
         getHint,
         highlightMates,
-        highlightSameValue,
         clearHighlights,
         victory,
         formattedTime,

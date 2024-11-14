@@ -15,7 +15,6 @@ export const Sudoku = () => {
         backwardMove,
         getHint,
         highlightMates,
-        highlightSameValue,
         clearHighlights,
         formattedTime,
         victory,
@@ -39,7 +38,6 @@ export const Sudoku = () => {
                         key={cell.id}
                         updateCellValue={updateCellValue}
                         highlightMates={highlightMates}
-                        highlightSameValue={highlightSameValue}
                         clearHighlights={clearHighlights}
                         cellMates={getCellMates(game.sudoku, cell)}
                         sameValueCells={getSameValueCell(game.sudoku, cell)}

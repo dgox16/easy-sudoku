@@ -14,8 +14,7 @@ export interface CellProps {
     cell: CellType;
     cellMates: string[];
     sameValueCells: string[];
-    highlightMates: (mates: string[]) => void;
-    highlightSameValue: (mates: string[]) => void;
+    highlightMates: (cellMates: string[], sameValueCells: string[]) => void;
     clearHighlights: () => void;
     updateCellValue: (row: number, col: number, newValue: number) => void;
 }

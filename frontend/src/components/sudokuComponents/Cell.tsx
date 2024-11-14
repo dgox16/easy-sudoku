@@ -7,7 +7,6 @@ export const Cell: FC<CellProps> = ({
     cellMates,
     sameValueCells,
     highlightMates,
-    highlightSameValue,
     clearHighlights,
     updateCellValue,
 }) => {
@@ -22,8 +21,7 @@ export const Cell: FC<CellProps> = ({
     };
 
     const handleFocus = () => {
-        highlightMates(cellMates);
-        highlightSameValue(sameValueCells);
+        highlightMates(cellMates, sameValueCells);
     };
 
     const handleBlur = () => {
