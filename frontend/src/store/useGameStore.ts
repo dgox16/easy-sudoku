@@ -4,7 +4,10 @@ import type { GameType } from "../types/sudokuTypes.ts";
 
 interface GameState {
     game: GameType;
+    timer: number;
     setGame: (newGame: GameType) => void;
+    setTimer: (time: number) => void;
+    incTimer: () => void;
 }
 
 export const useGameStore = create<GameState>()(
@@ -14,9 +17,15 @@ export const useGameStore = create<GameState>()(
                 game: 0,
                 sudoku: [],
             },
+            timer: 0,
             setGame: (newGame: GameType) => {
-                console.log(newGame);
                 set({ game: newGame });
+            },
+            setTimer: (time: number) => {
+                set({ timer: time });
+            },
+            incTimer: () => {
+                set((state) => ({ timer: state.timer + 1 }));
             },
         }),
         {

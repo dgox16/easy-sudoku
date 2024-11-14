@@ -13,16 +13,16 @@ import { fetchSudoku } from "../utils/getGames.ts";
 import { updateAllGrid, updateGridWithRowColumn } from "../utils/updateGame.ts";
 
 export const useNewGame = () => {
-    const { game, setGame } = useGameStore();
+    const { game, setGame, setTimer, timer, incTimer } = useGameStore();
     const [victory, setVictory] = useState(false);
-    const [timer, setTimer] = useState(0);
     const prevGameRef = useRef<GameType | null>(null);
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         intervalRef.current = setInterval(() => {
-            setTimer((prevTimer) => prevTimer + 1);
+            incTimer();
         }, 1000);
 
         return () => {
@@ -32,6 +32,7 @@ export const useNewGame = () => {
         };
     }, []);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         fetchSudoku(setTimer, setGame, prevGameRef).catch((error) => {
             toast.error(`Error loading the game: ${error.message}`, {
