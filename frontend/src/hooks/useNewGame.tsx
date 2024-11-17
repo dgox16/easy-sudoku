@@ -158,8 +158,6 @@ export const useNewGame = () => {
         });
     };
 
-    const formattedTime = formatTime(timer);
-
     return {
         updateCellValue,
         anotherGame,
@@ -168,6 +166,6 @@ export const useNewGame = () => {
         highlightMates,
         clearHighlights,
         victory,
-        formattedTime,
+        formattedTime: formatTime(timer),
     };
 };
