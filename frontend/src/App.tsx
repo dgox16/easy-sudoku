@@ -11,7 +11,7 @@ function App() {
                     <Sudoku />
                 </div>
             </main>
-            <footer className="flex justify-center mt-8">
+            <footer className="flex justify-center mt-8 opacity-75">
                 <div className=" w-recommend text-center">
                     <p className="py-2 text-[12px] sm:text-[14px]">
                         © 2024 Diego Armando Gómez Martínez.
