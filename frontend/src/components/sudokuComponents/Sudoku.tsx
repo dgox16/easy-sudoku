@@ -59,7 +59,7 @@ export const Sudoku = () => {
                 <div className="grid grid-cols-2 w-[350px] gap-x-7 mt-3">
                     <button
                         type="button"
-                        className="bg-frost-0 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-105 transition"
+                        className="bg-frost-0 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
                         onClick={async () => {
                             await getHint(game.game);
                         }}
@@ -68,7 +68,7 @@ export const Sudoku = () => {
                     </button>
                     <button
                         type="button"
-                        className="bg-aurora-purple rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-105 transition"
+                        className="bg-aurora-purple rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
                         onClick={async () => {
                             await backwardMove(game.game);
                         }}
