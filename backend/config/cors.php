@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGIN', '')),
+    'allowed_origins' => ['*'], // Permitir todos los orígenes (ajustar según sea necesario)
 
     'allowed_origins_patterns' => [],
 
