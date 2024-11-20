@@ -31,7 +31,6 @@ class SudokuController extends Controller
             'game' => $game->id,
             'difficult' => $newSudoku->difficult,
             'sudoku' => $newSudoku->grid,
-            'sudoku_id' => $newSudoku->id
         ]);
     }
 
