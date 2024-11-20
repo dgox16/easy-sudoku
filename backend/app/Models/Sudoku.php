@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property SudokuDifficult|mixed $difficult
  * @property mixed $id
  * @method static create(array $array)
+ * @method static where(string $string, SudokuDifficult $difficult)
  */
 class Sudoku extends Model
 {

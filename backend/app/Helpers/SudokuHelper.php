@@ -2,7 +2,10 @@
 
 namespace App\Helpers;
 
+use App\Enums\SudokuDifficult;
 use App\Models\Movement;
+use App\Models\Sudoku;
+use App\Services\SudokuGenerator;
 
 class SudokuHelper
 {
@@ -24,6 +27,27 @@ class SudokuHelper
         $movements = Movement::where('game_id', $gameId)->count();
 
         return $movements === 0 ? 1 : $movements + 1;
+    }
+
+    public static function getSudoku($difficult)
+    {
+        $difficult = SudokuDifficult::from($difficult);
+        $numberSudokus = Sudoku::where('difficult', $difficult)->count();
+
+        if ($numberSudokus < 50) {
+            $generator = new SudokuGenerator;
+            $board = $generator->generate();
+            $sudokuWithRemovedNumbers = $generator->removeNumbers($difficult);
+
+            return Sudoku::create([
+                'solution' => $board,
+                'grid' => $sudokuWithRemovedNumbers,
+                'difficult' => $difficult->value,
+            ]);
+        } else {
+            return Sudoku::where('difficult', $difficult)->inRandomOrder()->first();
+        }
+
     }
 
     public static function searchHint(array $solutionGrid, array $currentGrid): array

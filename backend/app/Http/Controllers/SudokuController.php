@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\SudokuDifficult;
 use App\Helpers\SudokuHelper;
 use App\Http\Requests\backwardRequest;
 use App\Http\Requests\hintRequest;
@@ -10,31 +9,19 @@ use App\Http\Requests\NewGameRequest;
 use App\Http\Requests\newMovementRequest;
 use App\Models\Game;
 use App\Models\Movement;
-use App\Models\Sudoku;
-use App\Services\SudokuGenerator;
 use Illuminate\Http\JsonResponse;
 
 class SudokuController extends Controller
 {
     public function newGameSudoku(NewGameRequest $request): JsonResponse
     {
-        $difficult = SudokuDifficult::from($request->difficult);
-
-        $generator = new SudokuGenerator;
-        $board = $generator->generate();
-        $sudokuWithRemovedNumbers = $generator->removeNumbers($difficult);
-
-        $newSudoku = Sudoku::create([
-            'solution' => $board,
-            'grid' => $sudokuWithRemovedNumbers,
-            'difficult' => $difficult->value,
-        ]);
+        $newSudoku = SudokuHelper::getSudoku($request->difficult);
 
         $game = Game::create(['sudoku_id' => $newSudoku->id]);
 
         Movement::create([
             'game_id' => $game->id,
-            'current_grid' => $sudokuWithRemovedNumbers,
+            'current_grid' => $newSudoku->solution,
             'number_movement' => 1,
             'is_winning_movement' => false,
             'is_hint' => false
@@ -44,6 +31,7 @@ class SudokuController extends Controller
             'game' => $game->id,
             'difficult' => $newSudoku->difficult,
             'sudoku' => $newSudoku->grid,
+            'sudoku_id' => $newSudoku->id
         ]);
     }
 

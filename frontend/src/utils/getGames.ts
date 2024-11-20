@@ -20,6 +20,7 @@ export const fetchSudoku = async (
     try {
         setTimer(0);
         const gameResponse = await newGameRequest(difficult);
+        console.log(gameResponse.game)
         const gameFormatted = convertMatrixToGrid(gameResponse);
         setGame(gameFormatted);
         prevGameRef.current = gameFormatted;
