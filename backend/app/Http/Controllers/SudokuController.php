@@ -21,7 +21,7 @@ class SudokuController extends Controller
 
         Movement::create([
             'game_id' => $game->id,
-            'current_grid' => $newSudoku->solution,
+            'current_grid' => $newSudoku->grid,
             'number_movement' => 1,
             'is_winning_movement' => false,
             'is_hint' => false

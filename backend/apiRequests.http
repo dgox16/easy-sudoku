@@ -122,6 +122,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8000/sudoku/get-hint?game=7
+http://localhost:8000/sudoku/get-hint?game=10&timer=9
 Accept: application/json
 Content-Type: application/json
