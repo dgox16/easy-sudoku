@@ -21,6 +21,7 @@ export const convertMatrixToGrid = (sudoku: GameMatrixType): GameType => {
     });
     return {
         game: sudoku.game,
+        difficult: sudoku.difficult,
         sudoku: grid,
     };
 };

@@ -2,11 +2,13 @@ import type { CellType } from "./cellTypes";
 
 export type GameMatrixType = {
     game: number;
+    difficult: string;
     sudoku: number[][];
 };
 
 export type GameType = {
     game: number;
+    difficult: string;
     sudoku: CellType[];
 };
 

@@ -42,6 +42,7 @@ class SudokuController extends Controller
 
         return response()->json([
             'game' => $game->id,
+            'difficult' => $newSudoku->difficult,
             'sudoku' => $newSudoku->grid,
         ]);
     }

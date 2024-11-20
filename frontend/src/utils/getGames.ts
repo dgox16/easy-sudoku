@@ -1,4 +1,3 @@
-import type React from "react";
 import { newGameRequest } from "../services/sudokuRequests.ts";
 import type { GameType } from "../types/sudokuTypes.ts";
 import { convertMatrixToGrid } from "./formatSudoku.ts";
@@ -8,6 +7,7 @@ export const fetchSudoku = async (
     setTimer: (time: number) => void,
     setGame: (newGame: GameType) => void,
     prevGameRef: React.MutableRefObject<GameType | null>,
+    difficult: string = "medium"
 ) => {
     const { game, isGameExpired } = useGameStore.getState();
 
@@ -19,7 +19,7 @@ export const fetchSudoku = async (
 
     try {
         setTimer(0);
-        const gameResponse = await newGameRequest("medium");
+        const gameResponse = await newGameRequest(difficult);
         const gameFormatted = convertMatrixToGrid(gameResponse);
         setGame(gameFormatted);
         prevGameRef.current = gameFormatted;

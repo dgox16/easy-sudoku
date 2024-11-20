@@ -1,14 +1,14 @@
 import Confetti from "react-confetti-boom";
-import { useNewGame } from "../../hooks/useNewGame.tsx";
-import { useGameStore } from "../../store/useGameStore.ts";
+import {useNewGame} from "../../hooks/useNewGame.tsx";
+import {useGameStore} from "../../store/useGameStore.ts";
 import {
     getCellMates,
     getSameValueCell,
 } from "../../utils/getCellHighlight.ts";
-import { Cell } from "./Cell";
+import {Cell} from "./Cell";
 
 export const Sudoku = () => {
-    const { game } = useGameStore();
+    const {game} = useGameStore();
     const {
         updateCellValue,
         anotherGame,
@@ -16,6 +16,7 @@ export const Sudoku = () => {
         getHint,
         highlightMates,
         clearHighlights,
+        getNextDifficult,
         formattedTime,
         victory,
     } = useNewGame();
@@ -56,10 +57,10 @@ export const Sudoku = () => {
                     </button>
                 </div>
             ) : (
-                <div className="grid grid-cols-2 w-[350px] gap-x-7 mt-3">
+                <div className="grid grid-cols-2 w-[400px] gap-x-5 gap-y-4 mt-3">
                     <button
                         type="button"
-                        className="bg-frost-0 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
+                        className="bg-polar-night-3 text-snow-storm-2 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
                         onClick={async () => {
                             await getHint(game.game);
                         }}
@@ -68,12 +69,29 @@ export const Sudoku = () => {
                     </button>
                     <button
                         type="button"
-                        className="bg-aurora-purple rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
+                        className="bg-polar-night-3 text-snow-storm-2 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
                         onClick={async () => {
                             await backwardMove(game.game);
                         }}
                     >
                         Backward
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-frost-2 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
+                        onClick={async () => await anotherGame(game.difficult)}
+                    >
+                        Another Game
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-frost-0 rounded-xl w-full py-2 text-polar-night-0 font-medium text-lg hover:scale-[1.03] hover:brightness-105 transition"
+                        onClick={async () => {
+                            const newDifficut = getNextDifficult(game.difficult)
+                            await anotherGame(newDifficut)
+                        }}
+                    >
+                        Difficult: {game.difficult}
                     </button>
                 </div>
             )}

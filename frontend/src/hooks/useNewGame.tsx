@@ -13,11 +13,18 @@ import { fetchSudoku } from "../utils/getGames.ts";
 import { updateAllGrid, updateGridWithRowColumn } from "../utils/updateGame.ts";
 
 export const useNewGame = () => {
+    const difficulties = ["easy", "medium", "hard", "insane"];
     const { game, setGame, setTimer, timer, incTimer } = useGameStore();
     const [victory, setVictory] = useState(false);
     const prevGameRef = useRef<GameType | null>(null);
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const getNextDifficult = (currentDifficult: string ) => {
+        const currentIndex = difficulties.indexOf(currentDifficult);
+        const nextIndex = (currentIndex + 1) % difficulties.length;
+        return difficulties[nextIndex]
+    }
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
@@ -41,10 +48,10 @@ export const useNewGame = () => {
         });
     }, []);
 
-    const anotherGame = async () => {
+    const anotherGame = async (difficult: string) => {
         setVictory(false);
         try {
-            await fetchSudoku(setTimer, setGame, prevGameRef);
+            await fetchSudoku(setTimer, setGame, prevGameRef, difficult);
         } catch (error) {
             toast.error("Error starting a new game", {
                 icon: <ErrorIcon />,
@@ -74,6 +81,7 @@ export const useNewGame = () => {
 
         setGame({
             game: game.game,
+            difficult: game.difficult,
             sudoku: updatedGame,
         });
 
@@ -108,6 +116,7 @@ export const useNewGame = () => {
             );
             setGame({
                 game: game.game,
+                difficult: game.difficult,
                 sudoku: updatedGame,
             });
         } catch (e) {
@@ -128,6 +137,7 @@ export const useNewGame = () => {
 
         setGame({
             game: game.game,
+            difficult: game.difficult,
             sudoku: updatedGrid,
         });
 
@@ -139,6 +149,7 @@ export const useNewGame = () => {
     const highlightMates = (cellMates: string[], sameValueCell: string[]) => {
         setGame({
             game: game.game,
+            difficult: game.difficult,
             sudoku: game.sudoku.map((cell) => ({
                 ...cell,
                 isHighlighted: cellMates.includes(cell.id),
@@ -150,6 +161,7 @@ export const useNewGame = () => {
     const clearHighlights = () => {
         setGame({
             game: game.game,
+            difficult: game.difficult,
             sudoku: game.sudoku.map((cell) => ({
                 ...cell,
                 isHighlighted: false,
@@ -165,6 +177,7 @@ export const useNewGame = () => {
         getHint,
         highlightMates,
         clearHighlights,
+        getNextDifficult,
         victory,
         formattedTime: formatTime(timer),
     };
