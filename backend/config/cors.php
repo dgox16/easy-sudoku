@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => ['*'], // Permitir todos los orígenes (ajustar según sea necesario)
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*'],
 
     'allowed_headers' => ['*'],
 
