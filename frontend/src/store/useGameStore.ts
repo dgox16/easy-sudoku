@@ -17,6 +17,7 @@ export const useGameStore = create<GameState>()(
         (set, get) => ({
             game: {
                 game: 0,
+                difficult: "medium",
                 sudoku: [],
             },
             timer: 0,
