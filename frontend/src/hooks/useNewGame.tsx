@@ -16,6 +16,7 @@ export const useNewGame = () => {
     const difficulties = ["easy", "medium", "hard", "insane"];
     const { game, setGame, setTimer, timer, incTimer } = useGameStore();
     const [victory, setVictory] = useState(false);
+    const [loading, setLoading] = useState(true);
     const prevGameRef = useRef<GameType | null>(null);
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -41,21 +42,26 @@ export const useNewGame = () => {
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
-        fetchSudoku(setTimer, setGame, prevGameRef).catch((error) => {
+        setLoading(true)
+        fetchSudoku(setTimer, setGame, prevGameRef, "medium", false).catch((error) => {
             toast.error(`Error loading the game: ${error.message}`, {
                 icon: <ErrorIcon />,
             });
         });
+        setLoading(false)
     }, []);
 
     const anotherGame = async (difficult: string) => {
         setVictory(false);
+        setLoading(true)
         try {
-            await fetchSudoku(setTimer, setGame, prevGameRef, difficult);
+            await fetchSudoku(setTimer, setGame, prevGameRef, difficult, true);
         } catch (error) {
             toast.error("Error starting a new game", {
                 icon: <ErrorIcon />,
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -175,6 +181,7 @@ export const useNewGame = () => {
         anotherGame,
         backwardMove,
         getHint,
+        loading,
         highlightMates,
         clearHighlights,
         getNextDifficult,
