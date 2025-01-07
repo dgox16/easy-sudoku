@@ -14,7 +14,8 @@ function App() {
             <footer className="flex justify-center mt-8 opacity-75">
                 <div className=" w-recommend text-center">
                     <p className="py-2 text-[12px] sm:text-[14px]">
-                        © 2024 Diego Armando Gómez Martínez.
+                        © {new Date().getFullYear()} Diego Armando Gómez
+                        Martínez.
                         <span className="hidden sm:inline"> | </span>
                         <br aria-hidden={true} className="block sm:hidden" />
                         Almost all rights reserved.

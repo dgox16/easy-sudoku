@@ -21,11 +21,11 @@ export const useNewGame = () => {
     const debounceTimeout = useRef<ReturnType<typeof setInterval> | null>(null);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    const getNextDifficult = (currentDifficult: string ) => {
+    const getNextDifficult = (currentDifficult: string) => {
         const currentIndex = difficulties.indexOf(currentDifficult);
         const nextIndex = (currentIndex + 1) % difficulties.length;
-        return difficulties[nextIndex]
-    }
+        return difficulties[nextIndex];
+    };
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
@@ -42,18 +42,20 @@ export const useNewGame = () => {
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
-        setLoading(true)
-        fetchSudoku(setTimer, setGame, prevGameRef, "medium", false).catch((error) => {
-            toast.error(`Error loading the game: ${error.message}`, {
-                icon: <ErrorIcon />,
-            });
-        });
-        setLoading(false)
+        setLoading(true);
+        fetchSudoku(setTimer, setGame, prevGameRef, "medium", false).catch(
+            (error) => {
+                toast.error(`Error loading the game: ${error.message}`, {
+                    icon: <ErrorIcon />,
+                });
+            },
+        );
+        setLoading(false);
     }, []);
 
     const anotherGame = async (difficult: string) => {
         setVictory(false);
-        setLoading(true)
+        setLoading(true);
         try {
             await fetchSudoku(setTimer, setGame, prevGameRef, difficult, true);
         } catch (error) {
@@ -61,7 +63,7 @@ export const useNewGame = () => {
                 icon: <ErrorIcon />,
             });
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
