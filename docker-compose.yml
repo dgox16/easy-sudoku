@@ -6,15 +6,15 @@ services:
       context: ./frontend
       args:
         VITE_API_URL: ${VITE_API_URL}
-    image: ghcr.io/dgox16/easy_sudoku-frontend:latest
-    container_name: easy_sudoku-frontend-container
+    image: ghcr.io/dgox16/easy-sudoku-frontend:latest
+    container_name: easy-sudoku-frontend-container
     restart: unless-stopped
     ports:
       - "8005:80"
 
   api:
-    image: ghcr.io/dgox16/easy_sudoku-api:latest
-    container_name: easy_sudoku-api-container
+    image: ghcr.io/dgox16/easy-sudoku-api:latest
+    container_name: easy-sudoku-api-container
     restart: unless-stopped
     expose:
       - "9000"
@@ -27,7 +27,7 @@ services:
 
   api_nginx:
     image: nginx:alpine
-    container_name: easy_sudoku-api-nginx
+    container_name: easy-sudoku-api-nginx
     restart: unless-stopped
     ports:
       - "8006:80"
@@ -38,7 +38,7 @@ services:
 
   db:
     image: postgres:16-alpine
-    container_name: easy_sudoku-db-container
+    container_name: easy-sudoku-db-container
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data

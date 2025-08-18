@@ -1,12 +1,11 @@
 <?php
 
 return [
+    'paths' => ['*'],
 
-    'paths' => ['*', 'sanctum/csrf-cookie'],
+    'allowed_methods' => ['*'],
 
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'OPTIONS'],
-
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGIN', '')),
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
@@ -16,6 +15,5 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
-
+    'supports_credentials' => false,
 ];
