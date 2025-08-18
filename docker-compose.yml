@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    image: ghcr.io/dgox16/easySudoku-frontend:latest
+    container_name: easySudoku-frontend-container
+    restart: unless-stopped
+    ports:
+      - "8003:80"
+
+  api:
+    image: ghcr.io/dgox16/easySudoku-api:latest
+    container_name: easySudoku-api-container
+    restart: unless-stopped
+    expose:
+      - "9000"
+    volumes:
+      - api_storage:/var/www/storage
+    depends_on:
+      - db
+    env_file:
+      - ./api/.env.produccion
+
+  api_nginx:
+    image: nginx:alpine
+    container_name: easySudoku-api-nginx
+    restart: unless-stopped
+    ports:
+      - "8004:80"
+    volumes:
+      - ./nginx.api.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+
+  db:
+    image: postgres:16-alpine
+    container_name: easySudoku-db-container
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env.db
+
+volumes:
+  postgres_data:
+  api_storage:
