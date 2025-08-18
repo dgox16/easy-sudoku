@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/aplicaciones/easy-diceware
+            cd ~/aplicaciones/easySudoku
             git pull origin main
             docker compose pull
             docker compose up -d --force-recreate
