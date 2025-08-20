@@ -19,7 +19,7 @@ services:
     expose:
       - "9000"
     volumes:
-      - api_storage:/var/www/storage
+      - api_storage_easy_sudoku:/var/www/storage
     depends_on:
       - db
     env_file:
@@ -41,10 +41,10 @@ services:
     container_name: easy-sudoku-db-container
     restart: unless-stopped
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_easy_sudoku:/var/lib/postgresql/data
     env_file:
       - ./.env.db
 
 volumes:
-  postgres_data:
-  api_storage:
+  postgres_data_easy_sudoku:
+  api_storage_easy_sudoku:
