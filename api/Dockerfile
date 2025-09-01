@@ -17,12 +17,11 @@ COPY --from=vendor /app/vendor ./vendor
 COPY --chown=www-data:www-data . .
 RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
     && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
 RUN php artisan config:clear \
     && php artisan route:clear \
-    && php artisan view:clear \
     && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+    && php artisan route:cache
 
 EXPOSE 9000
 USER www-data
