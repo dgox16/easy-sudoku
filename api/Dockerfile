@@ -1,19 +1,29 @@
-FROM composer:2 as builder
+FROM composer:2.8 AS vendor
 
 WORKDIR /app
-COPY . .
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-dev --optimize-autoloader --no-scripts
 
-RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist
 
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 WORKDIR /var/www
+RUN apk add --no-cache --virtual .build-deps postgresql-dev \
+    && apk add --no-cache libpq \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && apk del .build-deps
 
-RUN apk add --no-cache postgresql-dev
-RUN docker-php-ext-install pdo pdo_pgsql
-
-COPY --from=builder /app .
-
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+COPY --from=vendor /app/vendor ./vendor
+COPY --chown=www-data:www-data . .
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
 EXPOSE 9000
+USER www-data
+CMD ["php-fpm"]

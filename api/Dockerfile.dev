@@ -1,0 +1,14 @@
+FROM php:8.4-fpm-alpine
+
+WORKDIR /var/www
+RUN apk add --no-cache git zip unzip postgresql-dev
+RUN docker-php-ext-install pdo pdo_pgsql
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-scripts --prefer-dist
+
+RUN chown -R www-data:www-data /var/www
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+EXPOSE 9000
