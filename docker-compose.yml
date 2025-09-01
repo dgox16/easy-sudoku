@@ -22,6 +22,11 @@ services:
       - db
     env_file:
       - ./api/.env.produccion
+    command: >
+      sh -c "
+        php artisan migrate --force || exit 1;
+        php-fpm
+      "
 
   api_nginx:
     image: nginx:alpine
