@@ -23,6 +23,5 @@ RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:cache
 
-EXPOSE 9000
 USER www-data
-CMD ["php-fpm"]
+EXPOSE 9000
