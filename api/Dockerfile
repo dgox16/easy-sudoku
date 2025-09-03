@@ -18,5 +18,8 @@ COPY --chown=www-data:www-data . .
 RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
     && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+RUN php artisan config:cache \
+    && php artisan route:cache
+
 USER www-data
 EXPOSE 9000
