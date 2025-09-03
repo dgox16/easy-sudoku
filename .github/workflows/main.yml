@@ -47,3 +47,13 @@ jobs:
             docker compose pull
             docker compose up -d --force-recreate
             docker image prune -af
+
+      - name: Run migrations
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/aplicaciones/easy-sudoku
+            docker compose exec -T api php artisan migrate --force

@@ -18,15 +18,11 @@ services:
       - "9000"
     volumes:
       - api_storage_easy_sudoku:/var/www/storage
+      - api_cache_easy_sudoku:/var/www/bootstrap/cache
     depends_on:
       - db
     env_file:
       - ./api/.env.produccion
-    command: >
-      sh -c "
-        php artisan migrate --force || exit 1;
-        php-fpm
-      "
 
   api_nginx:
     image: nginx:1.29.1-alpine
@@ -51,3 +47,4 @@ services:
 volumes:
   postgres_data_easy_sudoku:
   api_storage_easy_sudoku:
+  api_cache_easy_sudoku:
