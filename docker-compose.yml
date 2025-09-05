@@ -1,9 +1,5 @@
 services:
   frontend:
-    build:
-      context: ./frontend
-      args:
-        VITE_API_URL: ${VITE_API_URL}
     image: ghcr.io/dgox16/easy-sudoku-frontend:latest
     container_name: easy-sudoku-frontend-container
     restart: unless-stopped
